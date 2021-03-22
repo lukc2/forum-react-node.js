@@ -56,7 +56,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "heroku-postbuild": "npm install"
+    "heroku-postbuild": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
 		"build": "react-scripts build",
