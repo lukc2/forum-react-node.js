@@ -60,7 +60,7 @@
     "heroku-postbuild": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "build": "react-csp dev && npm run build",
+    "build": "react-csp dev && react-scripts build",
     "buildRun": "npm run build && npm run start"
   },
   "engines": {
