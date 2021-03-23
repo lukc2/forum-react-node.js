@@ -57,11 +57,11 @@
   },
   "devDependencies": {},
   "scripts": {
-    "heroku-postbuild": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "build": "cd client && npm run build",
-    "buildRun": "npm run build && npm run start"
+    "buildRun": "npm run build && npm run start",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "engines": {
     "npm": "6.14.11",
@@ -76,5 +76,5 @@
   "bugs": {
     "url": "https://github.com/lukc2/ProjektZespolowy/issues"
   },
-  "homepage": "https://github.com/lukc2/ProjektZespolowy#readme"
+  "homepage": "https://forum-proj-zal.herokuapp.com"
 }
