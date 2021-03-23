@@ -60,7 +60,7 @@
     "heroku-postbuild": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "build": "react-scripts build",
+    "build": "cd client && npm run build",
     "buildRun": "npm run build && npm run start"
   },
   "engines": {
@@ -76,5 +76,5 @@
   "bugs": {
     "url": "https://github.com/lukc2/ProjektZespolowy/issues"
   },
-  "homepage": "https://forum-proj-zal.herokuapp.com"
+  "homepage": "https://github.com/lukc2/ProjektZespolowy#readme"
 }
