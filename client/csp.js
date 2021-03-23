@@ -1,6 +1,10 @@
 module.exports = {
   dev: {
   "default-src": ["'self'"],
+  "font-src": [
+    "'self'",
+    "*",
+  ],
   "style-src": [
     "'self'",
     "*",
@@ -8,6 +12,10 @@ module.exports = {
   },
   prod: {
   "default-src": "'self'", 
+  "font-src": [
+    "'self'",
+    "*",
+  ],
   "style-src": [
     "'self'",
     "*",
