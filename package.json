@@ -1,9 +1,6 @@
 {
-  "name": "projektzespolowy",
-  "version": "1.0.0",
-  "description": "Projekt zespołowy",
-  "main": "server.js",
   "dependencies": {
+<<<<<<< HEAD
     "accepts": "^1.3.7",
     "array-flatten": "^1.1.1",
     "body-parser": "^1.19.0",
@@ -77,4 +74,8 @@
     "url": "https://github.com/lukc2/ProjektZespolowy/issues"
   },
   "homepage": "https://forum-proj-zal.herokuapp.com"
+=======
+    "express": "^4.17.1"
+  }
+>>>>>>> parent of b83e895 (fixed small errors +TODO)
 }
