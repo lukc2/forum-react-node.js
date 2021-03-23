@@ -26,9 +26,9 @@ if (process.env.NODE_ENV === "production") {
 //     res.send('Hello World!');
 // });
 
-	app.use(express.static(path.resolve(__dirname, "build")));
+	app.use(express.static(path.resolve(__dirname)));
 	app.get("*", (req, res) => {
-		res.sendFile(path.resolve(__dirname, "build","public", "index.html"));
+		res.sendFile(path.resolve(__dirname, "public", "index.html"));
 	});
 }
 
