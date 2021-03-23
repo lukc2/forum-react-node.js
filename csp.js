@@ -3,7 +3,7 @@ module.exports = {
   "default-src": ["'self'"],
   "font-src": [
     "'self'",
-    "*",
+    "* data: blob: 'unsafe-inline'",
   ],
   "style-src": [
     "'self'",
