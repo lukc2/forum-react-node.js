@@ -59,11 +59,10 @@
 		"vary": "^1.1.2"
 	},
 	"scripts": {
-		"heroku-postbuild": "cd client && npm install && npm run build",
+		"heroku-postbuild": "npm install && cd client && npm install && npm run build",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "node server.js",
-		"build": "cd client && npm run build",
-		"buildRun": "npm run build && npm run start"
+		"build": "cd client && npm run build"
 	},
 	"engines": {
 		"npm": "6.14.11",
