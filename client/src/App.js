@@ -18,7 +18,7 @@ function App() {
 				</Row>
 
 				<Route path="/category" component={Category} />
-				<Route path="/profil" component={Profile} />
+				<Route path="/profile" component={Profile} />
 				<Route path="/" exact component={Home} />
 			</BrowserRouter>
 		</Container>

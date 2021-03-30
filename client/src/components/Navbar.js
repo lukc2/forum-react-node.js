@@ -10,10 +10,20 @@ import {
 import { LinkContainer } from "react-router-bootstrap";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 import LogInOut from "./LogInOut";
+import Categories from "../utils/Categories";
 export default function OurNavbar() {
+	const CategoryDropDownItems = Categories.getCattegories().map((item) => {
+		return (
+			<LinkContainer to={item.link} key={item.id}>
+				<NavDropdown.Item key={item.id}>{item.name}</NavDropdown.Item>
+			</LinkContainer>
+		);
+	});
 	return (
 		<Navbar expand="lg" sticky="top">
-			<Navbar.Brand href="/">Forum</Navbar.Brand>
+			<LinkContainer to="/">
+				<Navbar.Brand href="/">Forum</Navbar.Brand>
+			</LinkContainer>
 			<Navbar.Toggle aria-controls="basic navbar-nav" />
 			<NavbarCollapse id="basic-navbar-nav">
 				<Nav className="mr-auto">
@@ -21,12 +31,11 @@ export default function OurNavbar() {
 						<Nav.Link>Home</Nav.Link>
 					</LinkContainer>
 					<NavDropdown title="Category" id="basic-nav-dropdown">
-						<LinkContainer to="/category">
-							<NavDropdown.Item>Kategoria 1</NavDropdown.Item>
-						</LinkContainer>
+						{CategoryDropDownItems}
 					</NavDropdown>
 				</Nav>
 				<Form inline className="mr-sm-2">
+					{/*TODO Wyrzucić do komponentu, szukanie wątków */}
 					<FormControl
 						type="text"
 						placeholder="Search"

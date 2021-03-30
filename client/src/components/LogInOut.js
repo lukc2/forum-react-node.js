@@ -1,7 +1,7 @@
 import React from "react";
-import { Button,NavDropdown } from "react-bootstrap";
+import { Button, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-
+import UserInfo from "../utils/UserInfo";
 export default function LogInOut() {
 	const loggedIn = (
 		<span>
@@ -22,5 +22,5 @@ export default function LogInOut() {
 			</LinkContainer>
 		</span>
 	);
-	return loggedIn;
+	return UserInfo.getLoggedIn() ? loggedIn : signIn;
 }
