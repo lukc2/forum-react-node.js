@@ -12,7 +12,21 @@ import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 import LogInOut from "./LogInOut";
 import Categories from "../utils/Categories";
 export default function OurNavbar() {
-	const CategoryDropDownItems = Categories.getCattegories().map((item) => {
+	//TODO replace after correct use of useEffect in Home
+	const categoriesJSON = [
+		{
+			id: "1",
+			name: "Category 1",
+			link: "/category/1",
+		},
+		{
+			id: "2",
+			name: "Category 2",
+			link: "/category/2",
+		},
+	];
+	// const CategoryDropDownItems = Categories.getCattegories().map((item) => {
+	const CategoryDropDownItems = categoriesJSON.map((item) => {
 		return (
 			<LinkContainer to={item.link} key={item.id}>
 				<NavDropdown.Item key={item.id}>{item.name}</NavDropdown.Item>
