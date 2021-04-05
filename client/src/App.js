@@ -17,7 +17,7 @@ function App() {
 					</Col>
 				</Row>
 
-				<Route path="/category" component={Category} />
+				<Route path="/category/:id" component={Category} />
 				<Route path="/profile" component={Profile} />
 				<Route path="/" exact component={Home} />
 			</BrowserRouter>

@@ -1,7 +1,9 @@
 import React from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import Categories from "./utils/Categories";
 export default function Home() {
+	//Zastąpić przez pobranie z bazy
 	const categoriesJSON = [
 		{
 			id: "1",
@@ -15,14 +17,23 @@ export default function Home() {
 		},
 	];
 
-	React.useEffect(() => {
-		//TODO fetch the categories and force update
-
-		Categories.setCattegories(categoriesJSON); //przykładowe użycie zmiennych
-	}, []);
+	Categories.setCategories(categoriesJSON);
+	const categoriesList = categoriesJSON.map((item) => {
+		return (
+			<Row key={item.id}>
+				<Link to={item.link}>
+					<Col>{item.id}</Col>
+					<Col>{item.name}</Col>
+				</Link>
+			</Row>
+		);
+	});
 	return (
-		<Row>
-			<Col>Home page</Col>
-		</Row>
+		<Container>
+			<Row>
+				<Col>Home page</Col>
+			</Row>
+			{categoriesList}
+		</Container>
 	);
 }

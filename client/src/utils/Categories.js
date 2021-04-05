@@ -1,14 +1,14 @@
 const Categories = (function () {
-	const getCattegories = function () {
+	const getCategories = function () {
 		return JSON.parse(localStorage.getItem("categories"));
 	};
-	const setCattegories = function (newCategories) {
+	const setCategories = function (newCategories) {
 		localStorage.setItem("categories", JSON.stringify(newCategories));
 	};
 
 	return {
-		getCattegories: getCattegories,
-		setCattegories: setCattegories,
+		getCategories: getCategories,
+		setCategories: setCategories,
 	};
 })();
 

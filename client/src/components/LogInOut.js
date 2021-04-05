@@ -1,15 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import UserInfo from "../utils/UserInfo";
+import Popup from "./LoginRegisterPopup";
 export default function LogInOut() {
-	const loggedIn = (
+	const [showPopup, setPopup] = useState(false);
+	const togglePopup = () => {
+		setPopup(!showPopup);
+	};
+	const [status, setStatus] = useState(false);
+	const statusChange = () => {
+		setStatus(!status); //forces render
+	};
+
+	const loggedInDropdown = (
 		<span>
-			<NavDropdown title="UserName">
+			<NavDropdown title={UserInfo.getNickname()}>
 				<LinkContainer to="/profile">
 					<NavDropdown.Item>Profile</NavDropdown.Item>
 				</LinkContainer>
-				<LinkContainer to="/signOut">
+				<LinkContainer
+					to="/signOut"
+					onClick={() => {
+						UserInfo.destroy();
+						statusChange(); //* TODO better way to do this
+					}}
+				>
 					<NavDropdown.Item>SignOut</NavDropdown.Item>
 				</LinkContainer>
 			</NavDropdown>
@@ -17,10 +33,9 @@ export default function LogInOut() {
 	);
 	const signIn = (
 		<span>
-			<LinkContainer to="/register">
-				<Button>Register</Button>
-			</LinkContainer>
+			<Button onClick={togglePopup}>Log in</Button>
+			{showPopup ? <Popup closePopup={togglePopup} /> : null}
 		</span>
 	);
-	return UserInfo.getLoggedIn() ? loggedIn : signIn;
+	return UserInfo.getLoggedIn() ? loggedInDropdown : signIn;
 }

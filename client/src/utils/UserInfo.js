@@ -1,21 +1,30 @@
 const UserInfo = (function () {
 	let nickname = "";
-	let loggedIn = false;
+	let loggedIn = null;
 	const getNickname = function () {
-		return nickname; // Or pull this from cookie/localStorage
+		if (nickname) return nickname;
+		nickname = sessionStorage.getItem("nickname") || false;
+		return nickname;
 	};
 
 	const setNickname = function (newNickname) {
 		nickname = newNickname;
-		// Also set this in cookie/localStorage
+		sessionStorage.setItem("nickname", nickname);
 	};
 	const getLoggedIn = function () {
-		return loggedIn; // Or pull this from cookie/localStorage
+		if (loggedIn) return loggedIn;
+		loggedIn = sessionStorage.getItem("loggedIn") || false;
+		return loggedIn;
 	};
 
 	const setLoggedIn = function (loggedInBool) {
 		loggedIn = loggedInBool;
-		// Also set this in cookie/localStorage
+		sessionStorage.setItem("loggedIn", loggedInBool);
+	};
+	const destroy = function () {
+		nickname = "";
+		loggedIn = null;
+		sessionStorage.clear();
 	};
 
 	return {
@@ -23,6 +32,7 @@ const UserInfo = (function () {
 		getNickname: getNickname,
 		setLoggedIn: setLoggedIn,
 		getLoggedIn: getLoggedIn,
+		destroy: destroy,
 	};
 })();
 
