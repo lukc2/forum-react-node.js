@@ -1,0 +1,64 @@
+.password_strength_meter_progress::-webkit-progress-bar {
+	background-color: #eee;
+	border-radius: 3px;
+}
+.strength_Weak,
+.strength_Fair,
+.strength_Good,
+.strength_Strong {
+	/* background-color: #eee;*/
+	border-radius: 3px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	border: none;
+	/* TODO Decrease size and center it */
+	width: 100%;
+	height: 8px;
+}
+/* Progressbar color Chrome*/
+.strength_Weak::-webkit-progress-value {
+	background-color: #f25f5c !important;
+}
+.strength_Fair::-webkit-progress-value {
+	background-color: #ffe066 !important;
+}
+.strength_Good::-webkit-progress-value {
+	background-color: #247ba0 !important;
+}
+.strength_Strong::-webkit-progress-value {
+	background-color: #70c1b3 !important;
+}
+/* Progressbar color Firefox */
+.strength_Weak::-moz-progress-bar {
+	background-color: #f25f5c !important;
+}
+.strength_Fair::-moz-progress-bar {
+	background-color: #ffe066 !important;
+}
+.strength_Good::-moz-progress-bar {
+	background-color: #247ba0 !important;
+}
+.strength_Strong::-moz-progress-bar {
+	background-color: #70c1b3 !important;
+}
+/* Progressbar color IE */
+.strength_Weak::-ms-fill {
+	background-color: #f25f5c !important;
+}
+.strength_Fair::-ms-fill {
+	background-color: #ffe066 !important;
+}
+.strength_Good::-ms-fill {
+	background-color: #247ba0 !important;
+}
+.strength_Strong::-ms-fill {
+	background-color: #70c1b3 !important;
+}
+/* Label */
+.label {
+	font-weight: 700;
+}
+.label span {
+	margin-left: 1ch;
+}

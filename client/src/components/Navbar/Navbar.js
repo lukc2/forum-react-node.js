@@ -10,7 +10,7 @@ import {
 import { LinkContainer } from "react-router-bootstrap";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 import LogInOut from "./LogInOut";
-import Categories from "../utils/Categories";
+import Categories from "../../utils/Categories";
 export default function OurNavbar() {
 	if (Categories.getCategories() === null) {
 		const categoriesJSON = [
@@ -41,7 +41,7 @@ export default function OurNavbar() {
 					);
 			  });
 	return (
-		<Navbar expand="lg" sticky="top">
+		<Navbar expand="lg" sticky="top" bg="light">
 			<LinkContainer to="/">
 				<Navbar.Brand href="/">Forum</Navbar.Brand>
 			</LinkContainer>

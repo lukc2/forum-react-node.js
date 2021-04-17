@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import UserInfo from "../utils/UserInfo";
+import UserInfo from "../../utils/UserInfo";
 import Popup from "./LoginRegisterPopup";
 export default function LogInOut() {
 	const [showPopup, setPopup] = useState(false);
