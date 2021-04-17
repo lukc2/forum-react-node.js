@@ -1,37 +1,37 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import UserInfo from "../utils/UserInfo";
-
-export default function Register(props) {
+import UserInfo from "../../utils/UserInfo";
+import styles from "../../styles/components/Login.module.css";
+export default function Login(props) {
 	const [login, setLogin] = useState("");
 	const [password, setPassword] = useState("");
-	const [passwordConfirm, setPasswordConfirm] = useState("");
-	const [submitEnabled, setSubmitEnabled] = useState(false);
+	const [valid, setValid] = useState(false);
 
 	const loginHandler = (e) => {
 		setLogin(e.target.value);
+		if (e.target.value < 3 && password.length < 3) {
+			setValid(false);
+		} else {
+			setValid(true);
+		}
 	};
 	const passwordHandler = (e) => {
 		setPassword(e.target.value);
-	};
-	const passwordConfirmHandler = (e) => {
-		setPasswordConfirm(e.target.value);
-		if (password !== passwordConfirm) {
-			//TODO display some text
-			setSubmitEnabled(false);
+		if (e.target.value < 3 && login.length < 3) {
+			setValid(false);
 		} else {
-			setSubmitEnabled(true);
+			setValid(true);
 		}
 	};
 	const submitHandler = () => {
-		//TODO po udanej rejestracji
-		console.log(login, password);
+		//TODO po udanym zalogowaniu
+		console.log(login === password);
 		UserInfo.setNickname("Jakiś nick z bazy");
-		UserInfo.setLoggedIn(true);
+		UserInfo.setLoggedIn(true); //zalogowany
 		props.closePopup();
 	};
 	return (
-		<div>
+		<div className={styles.container}>
 			<Form>
 				<Form.Group>
 					<Form.Label>Login</Form.Label>
@@ -47,16 +47,13 @@ export default function Register(props) {
 						onChange={passwordHandler}
 					></Form.Control>
 				</Form.Group>
-				<Form.Group>
-					<Form.Label>Confirm password</Form.Label>
-					<Form.Control
-						type="password"
-						onChange={passwordConfirmHandler}
-					></Form.Control>
-				</Form.Group>
 			</Form>
-			<Button onClick={submitHandler} disabled={submitEnabled}>
-				Register
+			<Button
+				className={styles.button}
+				onClick={submitHandler}
+				disabled={!valid}
+			>
+				Log in
 			</Button>
 		</div>
 	);

@@ -1,27 +1,22 @@
 import "bootstrap/dist/css/bootstrap.min.css"; //Bootstrap
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { BrowserRouter, Route } from "react-router-dom";
 import Category from "./Category";
 import Profile from "./Profile";
-import OurNavbar from "./components/Navbar";
+import OurNavbar from "./components/Navbar/Navbar";
 import Home from "./Home";
 // import "./App.css";
 
 function App() {
 	return (
-		<Container fluid>
-			<BrowserRouter>
-				<Row>
-					<Col>
-						<OurNavbar />
-					</Col>
-				</Row>
-
+		<BrowserRouter>
+			<OurNavbar />
+			<Container fluid>
 				<Route path="/category/:id" component={Category} />
 				<Route path="/profile" component={Profile} />
 				<Route path="/" exact component={Home} />
-			</BrowserRouter>
-		</Container>
+			</Container>
+		</BrowserRouter>
 	);
 }
 

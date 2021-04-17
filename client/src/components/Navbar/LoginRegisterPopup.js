@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import styles from "../styles/components/LoginRegisterPopup.module.css";
+import styles from "../../styles/components/LoginRegisterPopup.module.css";
 import Login from "./Login";
 import Register from "./Register";
 export default function LoginRegisterPopup(props) {
@@ -9,8 +9,21 @@ export default function LoginRegisterPopup(props) {
 		setShowRegister(!showRegister);
 	};
 	return (
-		<div className={styles.popup}>
-			<div className={styles.popup_inner}>
+		<div
+			className={
+				showRegister ? styles.popup_register : styles.popup_login
+			}
+		>
+			<div
+				className={
+					showRegister
+						? styles.popup_inner_register
+						: styles.popup_inner_login
+				}
+			>
+				<div className={styles.close_x} onClick={props.closePopup}>
+					X
+				</div>
 				{showRegister ? (
 					<Register closePopup={props.closePopup} />
 				) : (
@@ -18,13 +31,13 @@ export default function LoginRegisterPopup(props) {
 				)}
 				<div>
 					{showRegister ? (
-						<span>
-							Already have an account?{" "}
+						<span className={styles.change_form}>
+							Already have an account?
 							<Button onClick={toggleShowRegister}>Log In</Button>
 						</span>
 					) : (
-						<span>
-							Don't have an account?{" "}
+						<span className={styles.change_form}>
+							Don't have an account?
 							<Button onClick={toggleShowRegister}>
 								Register
 							</Button>
