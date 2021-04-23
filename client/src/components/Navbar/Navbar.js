@@ -1,8 +1,5 @@
 import React from "react";
 import {
-	Button,
-	Form,
-	FormControl,
 	Nav,
 	Navbar,
 	NavDropdown,
@@ -11,6 +8,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 import LogInOut from "./LogInOut";
 import Categories from "../../utils/Categories";
+import SearchBar from './SearchBar';
 export default function OurNavbar() {
 	if (Categories.getCategories() === null) {
 		const categoriesJSON = [
@@ -55,16 +53,7 @@ export default function OurNavbar() {
 						{CategoryDropDownItems}
 					</NavDropdown>
 				</Nav>
-				<Form inline className="mr-sm-2">
-					{/*TODO Wyrzucić do komponentu, szukanie wątków */}
-					<FormControl
-						type="text"
-						placeholder="Search"
-						className="mr-sm-2"
-					/>
-					<Button variant="outline-primary">Search</Button>
-				</Form>
-
+				<SearchBar/>
 				<LogInOut />
 			</NavbarCollapse>
 		</Navbar>

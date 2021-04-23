@@ -23,7 +23,7 @@ export default function LogInOut() {
 					to="/signOut"
 					onClick={() => {
 						UserInfo.destroy();
-						statusChange(); //* TODO better way to do this
+						statusChange(); // TODO better way to do this
 					}}
 				>
 					<NavDropdown.Item>SignOut</NavDropdown.Item>
