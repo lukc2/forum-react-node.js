@@ -40,6 +40,7 @@ app.use(expressSession({
     saveUninitialized: false
     
 }))
+
 sessionStore.sync();
 
 //TODO: API - częściowo jest
