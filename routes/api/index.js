@@ -7,6 +7,6 @@ const signInRoutes = require("./signInAPI");
 router.use("/forum", categoryRoutes);
 router.use("/login", loginRoutes);
 router.use("/logout", logoutRoutes);
-router.use("/logout", signInRoutes);
+router.use("/signin", signInRoutes);
 
 module.exports = router;

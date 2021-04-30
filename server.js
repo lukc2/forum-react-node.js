@@ -29,6 +29,8 @@ app.use(express.json());
 
 
 
+
+
 //setting up session
 const sessionStore= new SequelizeStore({
     db: db.sequelize
