@@ -1,13 +1,74 @@
-import React from "react";
-import { Card, Col, Row } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import styles from "./styles/Profile.module.css";
+import uniqid from "uniqid";
 export default function Profile() {
+	const [errors, setErrors] = useState([]);
+	//TODO compare logged user to owner
+	const disableInput = false;
+	//TODO profile get to static data
+	const staticData = {
+		name: "Name",
+		email: "Email@aaa.com",
+		address: "Address",
+		image: null,
+	};
+	const [profile, setProfile] = useState({ ...staticData, image: "" });
+	const submitHandler = (e) => {
+		e.preventDefault();
+		if (disableInput) return;
+		if (!window.confirm("Are you sure to commit this changes?")) return;
+		alert("confirmed");
+		//TODO Post changes
+	};
+	const imageHandler = (e) => {
+		const newImage = e.target.files[0];
+		if (newImage.size > 2048) {
+			alert("File size to big");
+			setProfile({ ...profile, image: "" });
+			return;
+		}
+		setProfile({ ...profile, image: newImage });
+	};
+	useEffect(() => {
+		//* validation
+		let errors = [];
+		if (profile.name.length < 4) {
+			//TODO unitilize lengths for all validations
+			errors.push("Name is too short");
+		}
+		if (profile.email.length < 5) {
+			errors.push("Email is too short");
+		}
+		if (
+			!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+				profile.email
+			)
+		) {
+			errors.push("Incorect email address");
+		}
+		if (profile.address.length < 5) {
+			errors.push("Address is too short");
+		}
+		setErrors(errors);
+	}, [profile]);
+
+	const errMessages =
+		errors.length !== 0 ? (
+			<Card.Footer className="alert alert-danger">
+				<ul>
+					{errors.map((err) => (
+						<li key={uniqid()}>{err}</li>
+					))}
+				</ul>
+			</Card.Footer>
+		) : null;
 	return (
 		<Row className={styles.gutters_sm}>
 			<Col md="4" className="mb-3">
 				<Card className={styles.card}>
 					<Card.Body className={styles.card_body}>
-						<div className="d-flex flex-column align-items-center text-ceneter">
+						<div className="d-flex flex-column align-items-center text-center">
 							<img
 								className="rounded-circle"
 								width="150"
@@ -15,19 +76,25 @@ export default function Profile() {
 								alt="Profile"
 							/>
 							<div className="mt-3">
-								<h4>NAME</h4>
+								<h4>{staticData.name}</h4>
 								<p className="text-secondary mb-1">
-									Full Stack Developer
+									{staticData.email}
 								</p>
 								<p className="text-muted font-size-sm">
-									Bay Area, San Francisco, CA
+									{staticData.address}
 								</p>
-								<button className="btn btn-primary">
+								{/* <button className="btn btn-primary">
 									Follow
-								</button>
-								<button className="btn btn-outline-primary">
-									Message
-								</button>
+								</button> */}
+								<Form.File
+									accept="image/*"
+									custom
+									label="Change Image"
+									className="btn btn-outline-primary mw-100"
+									value={profile.image}
+									onChange={imageHandler}
+									disabled={disableInput}
+								/>
 							</div>
 						</div>
 					</Card.Body>
@@ -156,36 +223,76 @@ export default function Profile() {
 				</Card>
 			</Col>
 			<Col md="8">
-				<Card className={styles.card + " mb-3"}>
-					<Card.Body className={styles.card_body}>
-						<Row>
-							<Col sm="3">
-								<h6 className="mb-0">Full Name</h6>
-							</Col>
-							<Col sm="9" className="text-secondary">
-								NAME
-							</Col>
-						</Row>
-						<hr />
-						<Row>
-							<Col sm="3">
-								<h6 className="mb-0">Email</h6>
-							</Col>
-							<Col sm="9" className="text-secondary">
-								Email
-							</Col>
-						</Row>
-						<hr />
-						<Row>
-							<Col sm="3">
-								<h6 className="mb-0">Address</h6>
-							</Col>
-							<Col sm="9" className="text-secondary">
-								Address
-							</Col>
-						</Row>
-					</Card.Body>
-				</Card>
+				<Form onSubmit={(e) => submitHandler(e)}>
+					<Card className={styles.card + " mb-3"}>
+						<Card.Body className={styles.card_body}>
+							<Card.Title>Edit profile</Card.Title>
+							<Row>
+								<Col sm="3">
+									<h6 className="mb-0">Full Name</h6>
+								</Col>
+								<Col sm="9" className="text-secondary pt-2">
+									<Form.Control
+										type="text"
+										required
+										value={profile.name}
+										onChange={(e) =>
+											setProfile({
+												...profile,
+												name: e.target.value,
+											})
+										}
+										disabled={disableInput}
+									/>
+								</Col>
+							</Row>
+							<hr />
+							<Row>
+								<Col sm="3">
+									<h6 className="mb-0">Email</h6>
+								</Col>
+								<Col sm="9" className="text-secondary pt-2">
+									<Form.Control
+										type="email"
+										required
+										value={profile.email}
+										onChange={(e) =>
+											setProfile({
+												...profile,
+												email: e.target.value,
+											})
+										}
+										disabled={disableInput}
+									/>
+								</Col>
+							</Row>
+							<hr />
+							<Row>
+								<Col sm="3">
+									<h6 className="mb-0">Address</h6>
+								</Col>
+								<Col sm="9" className="text-secondary pt-2">
+									<Form.Control
+										type="text"
+										required
+										value={profile.address}
+										onChange={(e) =>
+											setProfile({
+												...profile,
+												address: e.target.value,
+											})
+										}
+										disabled={disableInput}
+									/>
+								</Col>
+							</Row>
+						</Card.Body>
+						{errMessages}
+						<Button type="submit" disabled={disableInput}>
+							Save
+						</Button>
+					</Card>
+				</Form>
 				<Row>
 					<Col sm="6" mb="3">
 						<Card className={styles.card}>
