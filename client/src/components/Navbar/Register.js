@@ -13,17 +13,17 @@ export default function Register(props) {
 	const loginHandler = (e) => {
 		setLogin(e.target.value);
 	};
-	//TODO fix error message text
 	const passwordHandler = (e) => {
 		setPassword(e.target.value);
 		let err = {};
 		if (passwordConfirm !== e.target.value) {
-			err = { ...err, match: "Passwords do not match!" };
+			if(passwordConfirm.localeCompare("")===0)
+				// err = { ...err, match: "Passwords do not match!" };
 			setValidPassword(false);
 		} else {
 			setValidPassword(true);
 		}
-		if (passwordConfirm.length < 3) {
+		if (password.length < 3) {
 			err = { ...err, length: "Password is to short!" };
 			setValidPassword(false);
 		}
