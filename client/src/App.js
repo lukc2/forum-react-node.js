@@ -5,6 +5,7 @@ import Category from "./Category";
 import Profile from "./Profile";
 import OurNavbar from "./components/Navbar/Navbar";
 import Home from "./Home";
+import { Search } from "./Search";
 // import "./App.css";
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
 		<BrowserRouter>
 			<OurNavbar />
 			<Container fluid>
+				<Route path="/search/" component={Search}/>
 				<Route path="/category/:id" component={Category} />
 				<Route path="/profile" component={Profile} />
 				<Route path="/" exact component={Home} />
