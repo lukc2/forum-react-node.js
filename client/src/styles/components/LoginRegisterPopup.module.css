@@ -1,0 +1,59 @@
+.popup_login {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+.popup_inner_login {
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	right: 25%;
+	max-width: 75ch;
+	margin: auto;
+	border-radius: 20px;
+	background: white;
+	padding-bottom: 0.4rem;
+}
+.popup_register {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+.popup_inner_register {
+	position: absolute;
+	left: 25%;
+	right: 25%;
+	top: 25%;
+	max-width: 75ch;
+	margin: auto;
+	border-radius: 20px;
+	background: white;
+	padding-bottom: 0.4rem;
+}
+.change_form {
+	margin-left: 1.3rem;
+}
+.change_form button {
+	margin-left: 1ch;
+}
+.close_x {
+	display: block;
+	float: right;
+	margin-top: 0.4rem;
+	margin-right: 0.7rem;
+}
+.close_x:hover {
+	cursor: pointer;
+}
