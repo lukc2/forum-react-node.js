@@ -18,6 +18,14 @@ export default function Profile() {
 		e.preventDefault();
 		if (disableInput) return;
 		if (!window.confirm("Are you sure to commit this changes?")) return;
+		if (
+			staticData.name.localeCompare(profile.name) === 0 ||
+			staticData.email.localeCompare(profile.email) === 0 ||
+			staticData.address.localeCompare(profile.address) === 0
+		) {
+			alert("No data was changed");
+			return;
+		}
 		alert("confirmed");
 		//TODO Post changes
 	};
@@ -29,6 +37,10 @@ export default function Profile() {
 			return;
 		}
 		setProfile({ ...profile, image: newImage });
+	};
+	const imageUpdateHandler = () => {
+		if (profile.image.localeCompare("") === 0) return;
+		//TODO profile.image to string and send
 	};
 	useEffect(() => {
 		//* validation
@@ -83,18 +95,23 @@ export default function Profile() {
 								<p className="text-muted font-size-sm">
 									{staticData.address}
 								</p>
-								{/* <button className="btn btn-primary">
-									Follow
-								</button> */}
 								<Form.File
 									accept="image/*"
 									custom
 									label="Change Image"
-									className="btn btn-outline-primary mw-100"
+									className=" mw-100"
 									value={profile.image}
 									onChange={imageHandler}
 									disabled={disableInput}
 								/>
+								<Button
+									variant="success"
+									className="mt-2"
+									onClick={imageUpdateHandler}
+									disabled={disableInput}
+								>
+									Update
+								</Button>
 							</div>
 						</div>
 					</Card.Body>
