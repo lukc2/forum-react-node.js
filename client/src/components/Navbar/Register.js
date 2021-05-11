@@ -2,43 +2,17 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import UserInfo from "../../utils/UserInfo";
 import styles from "../../styles/components/Register.module.css";
-import PwdMeter from "../PwdMeter";
+import Password from "../Password";
+
 export default function Register(props) {
 	const [login, setLogin] = useState("");
 	const [password, setPassword] = useState("");
-	const [passwordConfirm, setPasswordConfirm] = useState("");
 	const [validPassword, setValidPassword] = useState(false);
-	const [errors, setErrors] = useState({});
 
 	const loginHandler = (e) => {
 		setLogin(e.target.value);
 	};
-	const passwordHandler = (e) => {
-		setPassword(e.target.value);
-		let err = {};
-		if (passwordConfirm !== e.target.value) {
-			if(passwordConfirm.localeCompare("")===0)
-				// err = { ...err, match: "Passwords do not match!" };
-			setValidPassword(false);
-		} else {
-			setValidPassword(true);
-		}
-		if (password.length < 3) {
-			err = { ...err, length: "Password is to short!" };
-			setValidPassword(false);
-		}
-		setErrors(err);
-	};
-	const passwordConfirmHandler = (e) => {
-		setErrors({});
-		setPasswordConfirm(e.target.value);
-		if (password !== e.target.value) {
-			setErrors({ ...errors, match: "Passwords do not match!" });
-			setValidPassword(false);
-		} else {
-			setValidPassword(true);
-		}
-	};
+
 	const submitHandler = () => {
 		//TODO po udanej rejestracji
 		console.log(login, password);
@@ -56,33 +30,12 @@ export default function Register(props) {
 						onChange={loginHandler}
 					></Form.Control>
 				</Form.Group>
-				<Form.Group>
-					<Form.Label>Password</Form.Label>
-					<Form.Control type="password" onChange={passwordHandler} />
-					<Form.Text>
-						Your password must be 4-20 characters long, contain
-						letters and numbers
-					</Form.Text>
-					{password ? <PwdMeter password={password} /> : ""}
-					{errors.length ? (
-						<div className="text-danger">{errors.length}</div>
-					) : (
-						""
-					)}
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Confirm password</Form.Label>
-					<Form.Control
-						type="password"
-						onChange={passwordConfirmHandler}
-					/>
-					{errors.match ? (
-						<div className="text-danger">{errors.match}</div>
-					) : (
-						""
-					)}
-				</Form.Group>
 			</Form>
+			<Password
+				password={password}
+				setPassword={setPassword}
+				valid={setValidPassword}
+			/>
 			<Button
 				onClick={submitHandler}
 				disabled={!validPassword}

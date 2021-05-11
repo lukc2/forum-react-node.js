@@ -1,27 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
-import styles from "./styles/Profile.module.css";
+import styles from "../styles/Profile.module.css";
 import uniqid from "uniqid";
+import Password from "../components/Password";
 export default function Profile() {
 	const [errors, setErrors] = useState([]);
+	const [newImage, setNewImage] = useState("");
+	const [password, setPassword] = useState("");
+	const [passwordValid, setPasswordValid] = useState(false);
+
 	//TODO compare logged user to owner
 	const disableInput = false;
-	//TODO profile get to static data
-	const staticData = {
-		name: "Name",
-		email: "Email@aaa.com",
-		address: "Address",
-		image: null,
-	};
-	const [profile, setProfile] = useState({ ...staticData, image: "" });
+
+	let staticData = useRef({
+		name: "",
+		email: "",
+		address: "",
+		image: "",
+		footer: "",
+	});
+	const [profile, setProfile] = useState({ ...staticData.current });
+	let firstLoad = useRef(true);
+	//! DB related
+	useEffect(() => {
+		//TODO profile get to static data
+		// wait
+		new Promise((r) => setTimeout(r, 1000))
+			.then(() => {
+				const data = {
+					name: "Name",
+					email: "Email@aaa.com",
+					address: "Address",
+					image: "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Flokeshdhakar.com%2Fprojects%2Flightbox2%2Fimages%2Fimage-5.jpg&f=1&nofb=1",
+				};
+				staticData.current = data;
+				setProfile({ ...data });
+				firstLoad.current = false;
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
 	const submitHandler = (e) => {
 		e.preventDefault();
 		if (disableInput) return;
 		if (!window.confirm("Are you sure to commit this changes?")) return;
 		if (
-			staticData.name.localeCompare(profile.name) === 0 ||
-			staticData.email.localeCompare(profile.email) === 0 ||
-			staticData.address.localeCompare(profile.address) === 0
+			staticData.current.name.localeCompare(profile.name) === 0 ||
+			staticData.current.email.localeCompare(profile.email) === 0 ||
+			staticData.current.address.localeCompare(profile.address) === 0
 		) {
 			alert("No data was changed");
 			return;
@@ -30,18 +57,27 @@ export default function Profile() {
 		//TODO Post changes
 	};
 	const imageHandler = (e) => {
-		const newImage = e.target.files[0];
-		if (newImage.size > 2048) {
+		const targetImage = e.target.files[0];
+		if (targetImage.size > 2048) {
 			alert("File size to big");
-			setProfile({ ...profile, image: "" });
 			return;
 		}
-		setProfile({ ...profile, image: newImage });
+		setNewImage(targetImage);
 	};
 	const imageUpdateHandler = () => {
-		if (profile.image.localeCompare("") === 0) return;
+		if (newImage.localeCompare("") === 0) return;
 		//TODO profile.image to string and send
 	};
+	const passwordHandler = () => {
+		console.log(password);
+		//TODO implement password update
+		setPassword("");
+	};
+	const footerHandler = () => {
+		console.log(profile.footer);
+		// TODO implement footer update
+	};
+
 	useEffect(() => {
 		//* validation
 		let errors = [];
@@ -62,7 +98,7 @@ export default function Profile() {
 		if (profile.address.length < 5) {
 			errors.push("Address is too short");
 		}
-		setErrors(errors);
+		if (!firstLoad.current) setErrors(errors);
 	}, [profile]);
 
 	const errMessages =
@@ -84,23 +120,23 @@ export default function Profile() {
 							<img
 								className="rounded-circle"
 								width="150"
-								src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Flokeshdhakar.com%2Fprojects%2Flightbox2%2Fimages%2Fimage-5.jpg&f=1&nofb=1"
+								src={profile.image}
 								alt="Profile"
 							/>
 							<div className="mt-3">
-								<h4>{staticData.name}</h4>
+								<h4>{staticData.current.name}</h4>
 								<p className="text-secondary mb-1">
-									{staticData.email}
+									{staticData.current.email}
 								</p>
 								<p className="text-muted font-size-sm">
-									{staticData.address}
+									{staticData.current.address}
 								</p>
 								<Form.File
 									accept="image/*"
 									custom
 									label="Change Image"
 									className=" mw-100"
-									value={profile.image}
+									value={newImage}
 									onChange={imageHandler}
 									disabled={disableInput}
 								/>
@@ -243,7 +279,12 @@ export default function Profile() {
 				<Form onSubmit={(e) => submitHandler(e)}>
 					<Card className={styles.card + " mb-3"}>
 						<Card.Body className={styles.card_body}>
-							<Card.Title>Edit profile</Card.Title>
+							<Card.Title>
+								<i className="material-icons text-info mr-2">
+									account_circle
+								</i>
+								Edit profile
+							</Card.Title>
 							<Row>
 								<Col sm="3">
 									<h6 className="mb-0">Full Name</h6>
@@ -316,9 +357,33 @@ export default function Profile() {
 							<Card.Body className={styles.card_body}>
 								<h6 className="d-flex align-items-center mb-3">
 									<i className="material-icons text-info mr-2">
-										assignment
+										password
 									</i>
-									Project Status
+									Change password
+								</h6>
+								<Password
+									password={password}
+									setPassword={setPassword}
+									valid={setPasswordValid}
+									disabled={disableInput}
+								/>
+								<Button
+									onClick={passwordHandler}
+									disabled={!passwordValid || disableInput}
+								>
+									Change Password
+								</Button>
+							</Card.Body>
+						</Card>
+					</Col>
+					<Col sm="6" mb="3">
+						<Card className={styles.card}>
+							<Card.Body className={styles.card_body}>
+								<h6 className="d-flex align-items-center mb-3">
+									<i className="material-icons text-info mr-2">
+										trending_up
+									</i>
+									Stats
 								</h6>
 								<small>Web Design</small>
 								<div
@@ -393,85 +458,36 @@ export default function Profile() {
 							</Card.Body>
 						</Card>
 					</Col>
-					<Col sm="6" mb="3">
-						<Card className={styles.card}>
-							<Card.Body className={styles.card_body}>
-								<h6 className="d-flex align-items-center mb-3">
-									<i className="material-icons text-info mr-2">
-										assignment
-									</i>
-									Project Status
-								</h6>
-								<small>Web Design</small>
-								<div
-									className="progress mb-3"
-									style={{ height: "5px" }}
+				</Row>
+				<Row className="mt-1">
+					<Col>
+						<Card>
+							<Card.Header>Your Footer</Card.Header>
+							<Card.Body>
+								<Card.Title>Old</Card.Title>
+								<Form.Control
+									as="textarea"
+									value={staticData.current.footer}
+									disabled={true}
+								/>
+								<Card.Title className="mt-1">New</Card.Title>
+								<Form.Control
+									as="textarea"
+									value={profile.footer}
+									onChange={(e) =>
+										setProfile({
+											...profile,
+											footer: e.target.value,
+										})
+									}
+									disabled={disableInput}
+								/>
+								<Button
+									onClick={footerHandler}
+									disabled={disableInput}
 								>
-									<div
-										className="progress-bar bg-primary"
-										role="progressbar"
-										style={{ width: "80%" }}
-										aria-valuenow="80"
-										aria-valuemin="0"
-										aria-valuemax="100"
-									></div>
-								</div>
-								<small>Website Markup</small>
-								<div
-									className="progress mb-3"
-									style={{ height: "5px" }}
-								>
-									<div
-										className="progress-bar bg-primary"
-										role="progressbar"
-										style={{ width: "72%" }}
-										aria-valuenow="72"
-										aria-valuemin="0"
-										aria-valuemax="100"
-									></div>
-								</div>
-								<small>One Page</small>
-								<div
-									className="progress mb-3"
-									style={{ height: "5px" }}
-								>
-									<div
-										className="progress-bar bg-primary"
-										role="progressbar"
-										style={{ width: "89%" }}
-										aria-valuenow="89"
-										aria-valuemin="0"
-										aria-valuemax="100"
-									></div>
-								</div>
-								<small>Mobile Template</small>
-								<div
-									className="progress mb-3"
-									style={{ height: "5px" }}
-								>
-									<div
-										className="progress-bar bg-primary"
-										role="progressbar"
-										style={{ width: "55%" }}
-										aria-valuenow="55"
-										aria-valuemin="0"
-										aria-valuemax="100"
-									></div>
-								</div>
-								<small>Backend API</small>
-								<div
-									className="progress mb-3"
-									style={{ height: "5px" }}
-								>
-									<div
-										className="progress-bar bg-primary"
-										role="progressbar"
-										style={{ width: "66%" }}
-										aria-valuenow="66"
-										aria-valuemin="0"
-										aria-valuemax="100"
-									></div>
-								</div>
+									Update footer
+								</Button>
 							</Card.Body>
 						</Card>
 					</Col>

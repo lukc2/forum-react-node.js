@@ -1,14 +1,10 @@
 import React from "react";
-import {
-	Nav,
-	Navbar,
-	NavDropdown,
-} from "react-bootstrap";
+import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 import LogInOut from "./LogInOut";
 import Categories from "../../utils/Categories";
-import SearchBar from './SearchBar';
+import SearchBar from "./SearchBar";
 export default function OurNavbar() {
 	if (Categories.getCategories() === null) {
 		const categoriesJSON = [
@@ -52,8 +48,11 @@ export default function OurNavbar() {
 					<NavDropdown title="Category" id="basic-nav-dropdown">
 						{CategoryDropDownItems}
 					</NavDropdown>
+					<LinkContainer to="/admin">
+						<Nav.Link>Admin panel</Nav.Link>
+					</LinkContainer>
 				</Nav>
-				<SearchBar/>
+				<SearchBar />
 				<LogInOut />
 			</NavbarCollapse>
 		</Navbar>

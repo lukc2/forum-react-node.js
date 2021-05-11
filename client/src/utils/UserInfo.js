@@ -1,6 +1,7 @@
 const UserInfo = (function () {
 	let nickname = "";
 	let loggedIn = null;
+	let rank = 0;
 	const getNickname = function () {
 		if (nickname) return nickname;
 		nickname = sessionStorage.getItem("nickname") || false;
@@ -21,18 +22,27 @@ const UserInfo = (function () {
 		loggedIn = loggedInBool;
 		sessionStorage.setItem("loggedIn", loggedInBool);
 	};
+	const getRank = () => {
+		return rank;
+	};
+	const setRank = (newRank) => {
+		rank = newRank;
+	};
 	const destroy = function () {
 		nickname = "";
 		loggedIn = null;
+		rank = null;
 		sessionStorage.clear();
 	};
 
 	return {
-		setNickname: setNickname,
-		getNickname: getNickname,
-		setLoggedIn: setLoggedIn,
-		getLoggedIn: getLoggedIn,
-		destroy: destroy,
+		setNickname,
+		getNickname,
+		setLoggedIn,
+		getLoggedIn,
+		getRank,
+		setRank,
+		destroy,
 	};
 })();
 

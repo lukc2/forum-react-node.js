@@ -4,11 +4,9 @@ import { useHistory } from "react-router";
 export default function SearchBar(props) {
 	const history = useHistory();
 	const [search, setSearch] = useState(props.value || "");
-	//TODO Send it to search page (redux(?)/get)
 	const submitHandler = (e) => {
 		e.preventDefault();
-		//TODO make link relevant
-		const get = `${search}`;
+		const get = new URLSearchParams(search);
 		history.push(`/search/?search=${get}`);
 	};
 	return (
