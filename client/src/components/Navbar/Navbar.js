@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
@@ -6,6 +6,9 @@ import LogInOut from "./LogInOut";
 import Categories from "../../utils/Categories";
 import SearchBar from "./SearchBar";
 export default function OurNavbar() {
+	useEffect(() => {
+		//TODO axios.get Categories
+	}, []);
 	if (Categories.getCategories() === null) {
 		const categoriesJSON = [
 			{
