@@ -59,11 +59,16 @@ db.Rank.hasMany(db.User, {
     allowNull: false
 });
 
-db.Rank.sync();
-db.Category.sync();
-db.User.sync();
-db.Thread.sync();
-db.Post.sync();
+db.Rank.sync()
+    .then(db.Category.sync()
+    .then(()=>db.User.sync()
+    .then(()=>db.Thread.sync()
+    .then(()=>db.Post.sync()
+    ))));
+
+
+;
+
 
 
 module.exports = db;

@@ -27,6 +27,17 @@ module.exports = {
             }).end();
             return;
         }
+        if(exists.deleted == 1){
+            res.json({
+                success: false,
+                errors: [{
+                    value: body.login,
+                    param: "login",
+                    msg: "Użytkownik usunięty!"
+                }]
+            }).end();
+            return;
+        }
         let User = await db.User.findOne(
             {
                 where: {
