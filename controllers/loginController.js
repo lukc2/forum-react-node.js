@@ -56,6 +56,8 @@ module.exports = {
             res.json({
                 success: true,
                 userId: req.session.userId,
+                nickname: User.nickname,
+                rank: User.rank_id,
                 msg: "Pomyślnie zalogowano użytkownika",
                 //nie jestem pewien jak to bedzie wygladac z przodu i jaka sciezke wpisac, poki co wpisze symbolicznie
                 redirectTo: "/"
