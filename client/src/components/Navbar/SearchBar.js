@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Form, Button, FormControl } from "react-bootstrap";
 import { useHistory } from "react-router";
 export default function SearchBar({ value, setValue }) {
@@ -6,15 +6,16 @@ export default function SearchBar({ value, setValue }) {
 	const [search, setSearch] = useState(value || "");
 	const submitHandler = (e) => {
 		e.preventDefault();
+		if (!search) {
+			alert("Please enter search phrase");
+			return;
+		}
 		const get = new URLSearchParams("");
 		get.set("search", search);
 		history.push(`/search?${get.toString()}`);
 		console.log(value);
 		if (value) setValue(search);
 	};
-	useEffect(() => {
-		// setSearch(value);
-	}, [value]);
 	return (
 		//TODO change size
 		<Form inline className="mr-sm-2" onSubmit={(e) => submitHandler(e)}>

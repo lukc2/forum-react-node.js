@@ -3,14 +3,14 @@ import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import styles from "../styles/Profile.module.css";
 import uniqid from "uniqid";
 import Password from "../components/Password";
+import UserInfo from "../utils/UserInfo";
+// import axios from "axios";
 export default function Profile() {
 	const [errors, setErrors] = useState([]);
 	const [newImage, setNewImage] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordValid, setPasswordValid] = useState(false);
-
-	//TODO compare logged user to owner
-	const disableInput = false;
+	const disableInput = useRef(true);
 
 	let staticData = useRef({
 		name: "",
@@ -24,18 +24,23 @@ export default function Profile() {
 	//! DB related
 	useEffect(() => {
 		//TODO profile get to static data
+		// axios({ method: "get", url: "/api/profile" });
 		// wait
 		new Promise((r) => setTimeout(r, 1000))
-			.then(() => {
+			.then((result) => {
 				const data = {
 					name: "Name",
 					email: "Email@aaa.com",
 					address: "Address",
 					image: "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Flokeshdhakar.com%2Fprojects%2Flightbox2%2Fimages%2Fimage-5.jpg&f=1&nofb=1",
+					footer: "test footer",
 				};
 				staticData.current = data;
-				setProfile({ ...data });
 				firstLoad.current = false;
+				//TODO compare logged user to owner
+				disableInput.current =
+					data.name.localeCompare(UserInfo.getNickname()) !== 0;
+				setProfile({ ...data });
 			})
 			.catch((err) => {
 				console.log(err);
@@ -43,7 +48,7 @@ export default function Profile() {
 	}, []);
 	const submitHandler = (e) => {
 		e.preventDefault();
-		if (disableInput) return;
+		if (disableInput.current) return;
 		if (!window.confirm("Are you sure to commit this changes?")) return;
 		if (
 			staticData.current.name.localeCompare(profile.name) === 0 ||
@@ -77,16 +82,17 @@ export default function Profile() {
 		console.log(profile.footer);
 		// TODO implement footer update
 	};
+	const deleteHandler = () => {
+		if (!window.confirm("Are you sure you want to delete this account"))
+			return;
+		// TODO implement delete
+	};
 
 	useEffect(() => {
 		//* validation
 		let errors = [];
 		if (profile.name.length < 4) {
-			//TODO unitilize lengths for all validations
 			errors.push("Name is too short");
-		}
-		if (profile.email.length < 5) {
-			errors.push("Email is too short");
 		}
 		if (
 			!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
@@ -95,7 +101,7 @@ export default function Profile() {
 		) {
 			errors.push("Incorect email address");
 		}
-		if (profile.address.length < 5) {
+		if (profile.address.length < 4) {
 			errors.push("Address is too short");
 		}
 		if (!firstLoad.current) setErrors(errors);
@@ -138,13 +144,13 @@ export default function Profile() {
 									className=" mw-100"
 									value={newImage}
 									onChange={imageHandler}
-									disabled={disableInput}
+									disabled={disableInput.current}
 								/>
 								<Button
 									variant="success"
 									className="mt-2"
 									onClick={imageUpdateHandler}
-									disabled={disableInput}
+									disabled={disableInput.current}
 								>
 									Update
 								</Button>
@@ -274,6 +280,21 @@ export default function Profile() {
 						</li>
 					</ul>
 				</Card>
+				<Row className=" mt-3 mb-2">
+					<Col>
+						<Card>
+							<Card.Body>
+								<Button
+									variant="danger"
+									onClick={deleteHandler}
+									disabled={disableInput.current}
+								>
+									Delete account
+								</Button>
+							</Card.Body>
+						</Card>
+					</Col>
+				</Row>
 			</Col>
 			<Col md="8">
 				<Form onSubmit={(e) => submitHandler(e)}>
@@ -300,7 +321,7 @@ export default function Profile() {
 												name: e.target.value,
 											})
 										}
-										disabled={disableInput}
+										disabled={disableInput.current}
 									/>
 								</Col>
 							</Row>
@@ -320,7 +341,7 @@ export default function Profile() {
 												email: e.target.value,
 											})
 										}
-										disabled={disableInput}
+										disabled={disableInput.current}
 									/>
 								</Col>
 							</Row>
@@ -340,13 +361,13 @@ export default function Profile() {
 												address: e.target.value,
 											})
 										}
-										disabled={disableInput}
+										disabled={disableInput.current}
 									/>
 								</Col>
 							</Row>
 						</Card.Body>
 						{errMessages}
-						<Button type="submit" disabled={disableInput}>
+						<Button type="submit" disabled={disableInput.current}>
 							Save
 						</Button>
 					</Card>
@@ -365,11 +386,13 @@ export default function Profile() {
 									password={password}
 									setPassword={setPassword}
 									valid={setPasswordValid}
-									disabled={disableInput}
+									disabled={disableInput.current}
 								/>
 								<Button
 									onClick={passwordHandler}
-									disabled={!passwordValid || disableInput}
+									disabled={
+										!passwordValid || disableInput.current
+									}
 								>
 									Change Password
 								</Button>
@@ -459,7 +482,7 @@ export default function Profile() {
 						</Card>
 					</Col>
 				</Row>
-				<Row className="mt-1">
+				<Row className="mt-3">
 					<Col>
 						<Card>
 							<Card.Header>Your Footer</Card.Header>
@@ -480,11 +503,11 @@ export default function Profile() {
 											footer: e.target.value,
 										})
 									}
-									disabled={disableInput}
+									disabled={disableInput.current}
 								/>
 								<Button
 									onClick={footerHandler}
-									disabled={disableInput}
+									disabled={disableInput.current}
 								>
 									Update footer
 								</Button>

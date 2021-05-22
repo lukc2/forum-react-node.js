@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Button, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
@@ -22,8 +23,14 @@ export default function LogInOut() {
 				<LinkContainer
 					to="/signOut"
 					onClick={() => {
-						UserInfo.destroy();
-						statusChange(); // TODO better way to do this
+						axios({ method: "get", url: "/api/logout" })
+							.then((result) => {
+								UserInfo.destroy();
+								statusChange(); // FIXME better way to do this
+							})
+							.catch((error) =>
+								console.error(`signout error ${error}`)
+							);
 					}}
 				>
 					<NavDropdown.Item>SignOut</NavDropdown.Item>

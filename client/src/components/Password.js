@@ -24,7 +24,7 @@ export default function Password({
 		} else {
 			valid(true);
 		}
-		if (passwordField.length < 3) {
+		if (passwordField.length < 6) {
 			err = { ...err, length: "Password is to short!" };
 			valid(false);
 		}
@@ -52,15 +52,13 @@ export default function Password({
 					disabled={disabled}
 				/>
 				<Form.Text>
-					Your password must be 4-20 characters long, contain letters
+					Your password must be 6-20 characters long, contain letters
 					and numbers
 				</Form.Text>
-				{password ? <PwdMeter password={passwordField} /> : ""}
+				{password ? <PwdMeter password={passwordField} /> : null}
 				{errors.length ? (
 					<div className="text-danger">{errors.length}</div>
-				) : (
-					""
-				)}
+				) : null}
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>Confirm password</Form.Label>
@@ -71,9 +69,7 @@ export default function Password({
 				/>
 				{errors.match ? (
 					<div className="text-danger">{errors.match}</div>
-				) : (
-					""
-				)}
+				) : null}
 			</Form.Group>
 		</>
 	);

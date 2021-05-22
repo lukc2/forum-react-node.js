@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import UserInfo from "../../utils/UserInfo";
 import styles from "../../styles/components/Login.module.css";
+import axios from "axios";
 export default function Login(props) {
 	const [login, setLogin] = useState("");
 	const [password, setPassword] = useState("");
 	const [valid, setValid] = useState(false);
-
+	// TODO add locking while waiting for response from backend
 	const loginHandler = (e) => {
 		setLogin(e.target.value);
 		if (e.target.value < 3 && password.length < 3) {
@@ -24,11 +25,26 @@ export default function Login(props) {
 		}
 	};
 	const submitHandler = () => {
-		//TODO po udanym zalogowaniu
-		console.log(login === password);
-		UserInfo.setNickname("Jakiś nick z bazy");
-		UserInfo.setLoggedIn(true); //zalogowany
-		props.closePopup();
+		axios({
+			method: "POST",
+			url: "/api/login",
+			data: {
+				login,
+				password,
+			},
+		})
+			.then((result) => {
+				if (result.data.success === true) {
+					// TODO FIXME after backend fix, set proper nickname
+					UserInfo.setNickname(result.data.userId);
+					UserInfo.setLoggedIn(true); //zalogowany
+					props.closePopup();
+				} else {
+					// TODO proper error message
+					console.log(result.data.errors);
+				}
+			})
+			.catch((error) => console.log(error)); //TODO remove if smt wrong
 	};
 	return (
 		<div className={styles.container}>
