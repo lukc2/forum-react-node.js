@@ -27,6 +27,17 @@ module.exports = {
             }).end();
             return;
         }
+        if(exists.deleted == 1){
+            res.json({
+                success: false,
+                errors: [{
+                    value: body.login,
+                    param: "login",
+                    msg: "Użytkownik usunięty!"
+                }]
+            }).end();
+            return;
+        }
         let User = await db.User.findOne(
             {
                 where: {
@@ -45,6 +56,8 @@ module.exports = {
             res.json({
                 success: true,
                 userId: req.session.userId,
+                nickname: User.nickname,
+                rank: User.rank_id,
                 msg: "Pomyślnie zalogowano użytkownika",
                 //nie jestem pewien jak to bedzie wygladac z przodu i jaka sciezke wpisac, poki co wpisze symbolicznie
                 redirectTo: "/"
