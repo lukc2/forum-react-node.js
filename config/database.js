@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 
 require("dotenv").config();
 const sequelize = new Sequelize(process.env.DATABASE_URL);
+console.log(process.env.DATABASE_URL)
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
@@ -64,7 +65,7 @@ db.Rank.sync()
     .then(()=>db.User.sync()
     .then(()=>db.Thread.sync()
     .then(()=>db.Post.sync()
-    )))).catch(err => {console.log(err)});
+    ))));
 
 
 ;
