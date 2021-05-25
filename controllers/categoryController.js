@@ -5,7 +5,6 @@ const { validationResult } = require('express-validator');
 module.exports = {
 
     listCategories: function (req, res) {
-        const category_id = req.params.categoryId;
         db.Category.findAll().then(data => {
             res.json(data);
         }).catch(err => {
