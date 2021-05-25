@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 require("dotenv").config();
-const sequelize = new Sequelize(process.env.DATABASE_URL).catch(err => {console.log(err)});
+const sequelize = new Sequelize(process.env.DATABASE_URL);
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
