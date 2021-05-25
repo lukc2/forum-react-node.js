@@ -4,7 +4,6 @@ const db = require('../config/database');
 module.exports = {
     //http://localhost:3000/api/adminpanel GET
     listUsers : async (req, res) => {
-        req.session.userId = 1;
         const user = await db.User.findByPk(req.session.userId);
         if(user.rank_id != 1)//tutaj zależy od tego jak jest w bazie, można ustalić że 1 to admin a 2 to mod
         {
@@ -28,7 +27,6 @@ module.exports = {
     },
     //http://localhost:3000/api/adminpanel PUT
     makeMod : async (req, res) => {
-        req.session.userId = 1;
         const user = await db.User.findByPk(req.session.userId);
         const updatedUser = req.body.updatedId
 
@@ -62,7 +60,6 @@ module.exports = {
     },
     //http://localhost:3000/api/adminpanel DELETE
     banUser : async (req, res) => {
-        req.session.userId = 1;
         const user = await db.User.findByPk(req.session.userId);
         const updatedUser = req.body.updatedId
 
@@ -95,7 +92,6 @@ module.exports = {
     },
     //http://localhost:3000/api/adminpanel POST
     addCategory : async (req, res) => {
-        req.session.userId = 1;
         const user = await db.User.findByPk(req.session.userId);
         const categoryName = req.body.categoryName
 
