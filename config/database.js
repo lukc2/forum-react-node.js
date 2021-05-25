@@ -1,7 +1,14 @@
 const Sequelize = require('sequelize');
 
 require("dotenv").config();
-const sequelize = new Sequelize(process.env.DATABASE_URL+'?sslmode=require');
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    protocol: 'postgres',
+    dialectOptions:{
+        ssl:true,
+        rejectUnauthorized: false
+    }
+});
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
