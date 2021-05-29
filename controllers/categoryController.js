@@ -4,7 +4,16 @@ const { validationResult } = require('express-validator');
 
 module.exports = {
 
-
+    listCategories: function (req, res) {
+        db.Category.findAll().then(data => {
+            res.json(data);
+        }).catch(err => {
+            res.json({
+                success: false,
+                errors: err
+            })
+        })
+    },
     //http://localhost:3000/api/forum/:categoryId GET
     viewCategory: function (req, res) {
         const category_id = req.params.categoryId;
@@ -354,6 +363,7 @@ module.exports = {
             }).end();
         });
     },
+    // http://localhost:3000/api/forum/:categoryId/:threadId PATCH
     editPost : async (req, res) => {
         idPost = req.body.postID;
         newContent = req.body.content;

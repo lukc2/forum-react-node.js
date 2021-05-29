@@ -82,7 +82,7 @@ module.exports = {
             nickname: body.name,
             login: body.login,
             password: pwd,
-            rank_id: 2,
+            rank_id: 3,
             email: body.email
         }).then(User => {
             res.json({

@@ -1,7 +1,16 @@
 const Sequelize = require('sequelize');
 
 require("dotenv").config();
-const sequelize = new Sequelize(process.env.DATABASE_URL);
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    protocol: 'postgres',
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        }
+    }
+});
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
@@ -59,11 +68,16 @@ db.Rank.hasMany(db.User, {
     allowNull: false
 });
 
-db.Rank.sync();
-db.Category.sync();
-db.User.sync();
-db.Thread.sync();
-db.Post.sync();
+db.Rank.sync()
+    .then(db.Category.sync()
+    .then(()=>db.User.sync()
+    .then(()=>db.Thread.sync()
+    .then(()=>db.Post.sync()
+    ))));
+
+
+;
+
 
 
 module.exports = db;

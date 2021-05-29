@@ -32,6 +32,11 @@ module.exports = module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull:false
         },
+        deleted:{
+            type: DataTypes.BOOLEAN,
+            allowNull:false,
+            defaultValue: false,
+        }
     }, {
         tableName: 'user',
         timestamps: true
