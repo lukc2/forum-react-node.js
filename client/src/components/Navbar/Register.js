@@ -10,18 +10,15 @@ export default function Register(props) {
 	const [nickName, setNickName] = useState("");
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
+	const [validForm, setValidForm] = useState(false);
 	const [validPassword, setValidPassword] = useState(false);
-	const [validLogin, setValidLogin] = useState(false);
 	const [errors, setErrors] = useState([]);
 
 	useEffect(() => {
 		//* validation
 		const err = [];
-		let loginValid = true;
-		let passwordValid = true;
 		if (login.length < 4) {
 			err.push("Login must be at least 4 characters");
-			loginValid = false;
 		}
 		if (
 			!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
@@ -34,14 +31,10 @@ export default function Register(props) {
 			err.push("Nickname must be at least 4 characters");
 		}
 		setErrors(err);
-		setValidLogin(loginValid);
-		setValidPassword(passwordValid);
-	}, [login, password, email, nickName]);
+		setValidForm(err.length > 0 || !validPassword);
+	}, [login, email, nickName, validPassword]);
 
 	const submitHandler = () => {
-		//TODO po udanej rejestracji
-		console.log(login, password);
-		// TODO fix axios
 		axios({
 			method: "post",
 			url: "/api/signin",
@@ -49,9 +42,8 @@ export default function Register(props) {
 		})
 			.then((result) => {
 				if (result.data.success) {
-					UserInfo.setLoggedIn(true);
-					// TODO FIXME after backend, fix nickname
-					UserInfo.setNickname(result.data.nickName);
+					// TODO proper messages
+					//! you need to log in
 				} else {
 					// TODO proper error messages
 					console.error(result.data.errors);
@@ -106,7 +98,7 @@ export default function Register(props) {
 			) : null}
 			<Button
 				onClick={submitHandler}
-				disabled={!validPassword || !validLogin}
+				disabled={validForm}
 				className={styles.button}
 			>
 				Register

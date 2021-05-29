@@ -15,7 +15,7 @@ export default function LogInOut() {
 	};
 
 	const loggedInDropdown = (
-		<span>
+		<div className="mt-2">
 			<NavDropdown title={UserInfo.getNickname()}>
 				<LinkContainer to="/profile">
 					<NavDropdown.Item>Profile</NavDropdown.Item>
@@ -25,24 +25,24 @@ export default function LogInOut() {
 					onClick={() => {
 						axios({ method: "get", url: "/api/logout" })
 							.then((result) => {
-								UserInfo.destroy();
-								statusChange(); // FIXME better way to do this
+								if (result.data.success) {
+									UserInfo.destroy();
+									statusChange();
+								}
 							})
-							.catch((error) =>
-								console.error(`signout error ${error}`)
-							);
+							.catch((err) => console.error(err));
 					}}
 				>
 					<NavDropdown.Item>SignOut</NavDropdown.Item>
 				</LinkContainer>
 			</NavDropdown>
-		</span>
+		</div>
 	);
 	const signIn = (
-		<span>
+		<div className="mt-2">
 			<Button onClick={togglePopup}>Log in</Button>
 			{showPopup ? <Popup closePopup={togglePopup} /> : null}
-		</span>
+		</div>
 	);
 	return UserInfo.getLoggedIn() ? loggedInDropdown : signIn;
 }

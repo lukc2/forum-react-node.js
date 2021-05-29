@@ -18,8 +18,6 @@ function App() {
 				<Switch>
 					<Route path="/search/" component={Search} />
 					<Route path="/category/:id" component={Category} />
-					{/* <Route path="/profile" component={Profile} />
-					<Route path="/admin" component={AdminPanel} /> */}
 					<AuthRoute path="/profile" component={Profile} />
 					<AuthRoute path="/admin" component={AdminPanel} />
 					<Route path="/" exact component={Home} />

@@ -35,8 +35,9 @@ export default function Login(props) {
 		})
 			.then((result) => {
 				if (result.data.success === true) {
-					// TODO FIXME after backend fix, set proper nickname
-					UserInfo.setNickname(result.data.userId);
+					UserInfo.setNickname(result.data.nickname);
+					UserInfo.setId(parseInt(result.data.userId));
+					UserInfo.setRank(parseInt(result.data.rank));
 					UserInfo.setLoggedIn(true); //zalogowany
 					props.closePopup();
 				} else {
@@ -44,7 +45,7 @@ export default function Login(props) {
 					console.log(result.data.errors);
 				}
 			})
-			.catch((error) => console.log(error)); //TODO remove if smt wrong
+			.catch((error) => console.log(error));
 	};
 	return (
 		<div className={styles.container}>

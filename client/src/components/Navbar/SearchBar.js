@@ -17,16 +17,15 @@ export default function SearchBar({ value, setValue }) {
 		if (value) setValue(search);
 	};
 	return (
-		//TODO change size
 		<Form inline className="mr-sm-2" onSubmit={(e) => submitHandler(e)}>
 			<FormControl
 				type="text"
 				placeholder="Search"
-				className="mr-sm-2"
+				className="mr-sm-2 mt-2"
 				value={search}
 				onChange={(e) => setSearch(e.target.value)}
 			/>
-			<Button type="submit" variant="outline-primary">
+			<Button type="submit" variant="outline-primary" className="mt-2">
 				Search
 			</Button>
 		</Form>

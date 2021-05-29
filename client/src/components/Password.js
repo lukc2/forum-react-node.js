@@ -1,74 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PwdMeter from "./PwdMeter";
 import { Form } from "react-bootstrap";
 
 export default function Password({
 	password,
 	setPassword,
-	valid,
+	valid = () => {},
 	disabled = false,
 }) {
 	//* setPassword and valid are functions of setState
 	//! if you want to use valid to disable fields remember to use "!" disabled={!validValue}
-	const [passwordField, setPasswordField] = useState("");
 	const [passwordConfirm, setPasswordConfirm] = useState("");
 	const [errors, setErrors] = useState({});
 
-	const passwordHandler = (e) => {
-		setPasswordField(e.target.value);
-		let err = {};
-		if (passwordConfirm !== e.target.value) {
-			if (passwordConfirm.localeCompare("") === 0)
-				// err = { ...err, match: "Passwords do not match!" };
-				valid(false);
-		} else {
-			valid(true);
+	useEffect(() => {
+		//* validation
+		const err = {};
+		let ok = true;
+		if (password.length < 6) {
+			err.length = "Passwords must be at least 6 characters";
+			ok = false;
 		}
-		if (passwordField.length < 6) {
-			err = { ...err, length: "Password is to short!" };
-			valid(false);
+		if (password.localeCompare(passwordConfirm) !== 0) {
+			err.match = "Passwords do not match";
+			ok = false;
 		}
-		setPassword(e.target.value);
+		valid(ok);
 		setErrors(err);
-	};
-	const passwordConfirmHandler = (e) => {
-		setErrors({});
-		setPasswordConfirm(e.target.value);
-		if (passwordField !== e.target.value) {
-			setErrors({ ...errors, match: "Passwords do not match!" });
-			valid(false);
-		} else {
-			valid(true);
-		}
-		setPassword(e.target.value);
-	};
+	}, [password, passwordConfirm, valid]);
 	return (
 		<>
 			<Form.Group>
 				<Form.Label>Password</Form.Label>
 				<Form.Control
 					type="password"
-					onChange={passwordHandler}
+					onChange={(e) => setPassword(e.target.value)}
 					disabled={disabled}
 				/>
 				<Form.Text>
 					Your password must be 6-20 characters long, contain letters
 					and numbers
 				</Form.Text>
-				{password ? <PwdMeter password={passwordField} /> : null}
+				{password ? <PwdMeter password={password} /> : null}
 				{errors.length ? (
-					<div className="text-danger">{errors.length}</div>
+					<div className="alert alert-danger">{errors.length}</div>
 				) : null}
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>Confirm password</Form.Label>
 				<Form.Control
 					type="password"
-					onChange={passwordConfirmHandler}
+					onChange={(e) => setPasswordConfirm(e.target.value)}
 					disabled={disabled}
 				/>
 				{errors.match ? (
-					<div className="text-danger">{errors.match}</div>
+					<div className="alert alert-danger">{errors.match}</div>
 				) : null}
 			</Form.Group>
 		</>

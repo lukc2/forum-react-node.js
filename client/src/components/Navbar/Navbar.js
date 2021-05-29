@@ -11,7 +11,6 @@ export default function OurNavbar() {
 	const [reload, setReload] = useState(false);
 	const categories = useRef(Categories.getCategories());
 	useEffect(() => {
-		console.log("test");
 		if (categories === null) {
 			axios({ method: "get", url: "/api/categories" })
 				.then((result) => {
@@ -74,8 +73,7 @@ export default function OurNavbar() {
 					<NavDropdown title="Category" id="basic-nav-dropdown">
 						{CategoryDropDownItems}
 					</NavDropdown>
-					{/* FIXME */}
-					{UserInfo.getLoggedIn() ? (
+					{UserInfo.getLoggedIn() && UserInfo.getRank() === "1" ? (
 						<LinkContainer to="/admin">
 							<Nav.Link>Admin panel</Nav.Link>
 						</LinkContainer>

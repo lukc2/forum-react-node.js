@@ -1,49 +1,120 @@
-import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import { Button, Card, Col, Form, Row, Table } from "react-bootstrap";
 import styles from "../styles/Profile.module.css";
 import uniqid from "uniqid";
+import axios from "axios";
 export default function AdminPanel() {
 	// TODO check if newForum is working correctly
 	const [newForum, setNewForum] = useState("");
-	const [userData, setUserData] = useState(); //TODO find use for it?
+	const [userData, setUserData] = useState([]);
+	const [categories, setCategories] = useState([]);
 	const categoriesList = useRef();
 	const tableBodyUsers = useRef();
 	useEffect(() => {
-		// TODO axios get categories
-		const categories = [{ id: 1, name: "Category 1" }];
-		categoriesList.current = categories.map((c) => (
-			<li key={uniqid()}>{c.name}</li>
-		));
+		axios({ method: "get", url: "/api/forum" })
+			.then((response) => {
+				setCategories(response.data);
+			})
+			.catch((err) => console.error(err));
 
-		// TODO axios get users
-		const users = [{ id: 1, nickName: "test", rank: 4 }];
-		tableBodyUsers.current = users.map((user) => (
-			<tr key={uniqid()}>
-				<td>{user.id}</td>
-				<td>{user.nickName}</td>
-				<td>
-					{user.rank === 4 ? (
-						<Button variant="success">Make Mod</Button>
-					) : (
-						<Button variant="warning">Take away Mod</Button>
-					)}
-					<Button variant="danger" className="ml-2">
-						Ban
-					</Button>
-				</td>
-			</tr>
-		));
-		setUserData(users);
+		axios({ method: "get", url: "/api/adminpanel " })
+			.then((response) => {
+				setUserData(response.data);
+			})
+			.catch((err) => console.error(err));
 	}, []);
 	const forumSubmitHandler = (e) => {
 		e.preventDefault();
 		axios({
 			method: "POST",
 			url: "/api/category/create",
-			data: { ...newForum },
-		});
+			data: { categoryName: newForum },
+		})
+			.then((response) => {
+				if (response.data.success) {
+					// TODO show message
+				} else {
+					console.log(response.data);
+				}
+			})
+			.catch((err) => console.error(err));
 	};
+	const makeModHandler = (id) => {
+		axios({
+			method: "put",
+			url: "/api/adminpanel",
+			data: { updatedId: id },
+		})
+			.then((response) => {
+				if (response.data.success) {
+					// TODO show message
+				} else {
+					console.log(response.data);
+				}
+			})
+			.catch((err) => console.error(err));
+	};
+	const takeModHandler = (id) => {
+		alert("No backend implentation found");
+		// axios({ method: "get", url: "/api/adminpanel" ,data:{updatedId:id}})
+		// .then((response)=>{
+		// 	if(response.data.success){
+		// 		// TODO show message
+		// 	}else{
+		// 		console.log(response.data)
+		// 	}
+		// }).catch((err)=>console.error(err));
+	};
+	const banHandler = (id) => {
+		axios({
+			method: "delete",
+			url: "/api/adminpanel",
+			data: { updatedId: id },
+		})
+			.then((response) => {
+				if (response.data.success) {
+					// TODO show message
+				} else {
+					console.log(response.data);
+				}
+			})
+			.catch((err) => console.error(err));
+	};
+
+	categoriesList.current = categories.map((c) => (
+		<li key={uniqid()}>{c.name}</li>
+	));
+
+	tableBodyUsers.current = userData.map((user) => (
+		<tr key={uniqid()}>
+			<td>{user.id}</td>
+			<td>{user.nickName}</td>
+			<td>
+				{user.rank === 3 ? (
+					<Button
+						variant="success"
+						onClick={() => makeModHandler(user.id)}
+					>
+						Make Mod
+					</Button>
+				) : (
+					<Button
+						variant="warning"
+						onClick={() => takeModHandler(user.id)}
+					>
+						Take away Mod
+					</Button>
+				)}
+				<Button
+					variant="danger"
+					className="ml-2"
+					onClick={() => banHandler(user.id)}
+				>
+					Ban
+				</Button>
+			</td>
+		</tr>
+	));
 	return (
 		<Row className={styles.gutters_sm}>
 			<Col md="4" className="mb-3">
