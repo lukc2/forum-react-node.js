@@ -23,6 +23,7 @@ module.exports = {
             avatar: data.avatar,
             email: data.email,
             footer: data.footer,
+            date_of_birth: data.date_of_birth,
             reputationCount: reputationCount,
             joinDate: data.createdAt, 
             postCount: postCount
@@ -53,6 +54,7 @@ module.exports = {
                     errors: err,
                     msg:"Błąd aktualizacji nicku"
                 }).end();
+                return;
             })   
         }
         if(email != null && email != ''){
@@ -67,6 +69,7 @@ module.exports = {
                     errors: err,
                     msg:"Błąd aktualizacji email"
                 }).end();
+                return;
             }) 
         }
         if(date != null && date != ''){
@@ -82,6 +85,7 @@ module.exports = {
                     errors: err,
                     msg:"Błąd aktualizacji daty urodzenia!"
                 }).end();
+                return;
             }) 
         }
         res.json({
