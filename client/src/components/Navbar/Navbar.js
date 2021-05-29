@@ -1,16 +1,37 @@
-import React from "react";
-import {
-	Nav,
-	Navbar,
-	NavDropdown,
-} from "react-bootstrap";
+import React, { useEffect, useRef, useState } from "react";
+import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 import LogInOut from "./LogInOut";
 import Categories from "../../utils/Categories";
-import SearchBar from './SearchBar';
+import SearchBar from "./SearchBar";
+import axios from "axios";
+import UserInfo from "../../utils/UserInfo";
 export default function OurNavbar() {
-	if (Categories.getCategories() === null) {
+	const [reload, setReload] = useState(false);
+	const categories = useRef(Categories.getCategories());
+	useEffect(() => {
+		if (categories === null) {
+			axios({ method: "get", url: "/api/categories" })
+				.then((result) => {
+					//TODO FIXME with proper mapping
+					const data = result.data?.map((item) => {
+						return {
+							id: item.id,
+							name: item.name,
+							link: `/category/${item.id}`,
+						};
+					});
+					Categories.setCategories(data);
+					categories.current = data;
+					setReload(!reload);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	}, [reload]);
+	if (categories.current === null) {
 		const categoriesJSON = [
 			{
 				id: "1",
@@ -23,13 +44,13 @@ export default function OurNavbar() {
 				link: "/category/2",
 			},
 		];
-		Categories.setCategories(categoriesJSON);
+		categories.current = categoriesJSON;
 	}
 
 	const CategoryDropDownItems =
-		Categories.getCategories() === null
+		categories.current === null
 			? ""
-			: Categories.getCategories().map((item) => {
+			: categories.current.map((item) => {
 					return (
 						<LinkContainer to={item.link} key={item.id}>
 							<NavDropdown.Item key={item.id}>
@@ -52,8 +73,13 @@ export default function OurNavbar() {
 					<NavDropdown title="Category" id="basic-nav-dropdown">
 						{CategoryDropDownItems}
 					</NavDropdown>
+					{UserInfo.getLoggedIn() && UserInfo.getRank() === "1" ? (
+						<LinkContainer to="/admin">
+							<Nav.Link>Admin panel</Nav.Link>
+						</LinkContainer>
+					) : null}
 				</Nav>
-				<SearchBar/>
+				<SearchBar />
 				<LogInOut />
 			</NavbarCollapse>
 		</Navbar>

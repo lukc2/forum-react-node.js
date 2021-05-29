@@ -1,26 +1,31 @@
 import React, { useState } from "react";
 import { Form, Button, FormControl } from "react-bootstrap";
 import { useHistory } from "react-router";
-export default function SearchBar(props) {
+export default function SearchBar({ value, setValue }) {
 	const history = useHistory();
-	const [search, setSearch] = useState("");
-	//TODO Send it to search page (redux(?)/get)
+	const [search, setSearch] = useState(value || "");
 	const submitHandler = (e) => {
 		e.preventDefault();
-		//TODO make link relevant
-		const get = `${search}`;
-		history.push(`/search/?search=${get}`);
+		if (!search) {
+			alert("Please enter search phrase");
+			return;
+		}
+		const get = new URLSearchParams("");
+		get.set("search", search);
+		history.push(`/search?${get.toString()}`);
+		console.log(value);
+		if (value) setValue(search);
 	};
 	return (
 		<Form inline className="mr-sm-2" onSubmit={(e) => submitHandler(e)}>
 			<FormControl
 				type="text"
 				placeholder="Search"
-				className="mr-sm-2"
+				className="mr-sm-2 mt-2"
 				value={search}
 				onChange={(e) => setSearch(e.target.value)}
 			/>
-			<Button type="submit" variant="outline-primary">
+			<Button type="submit" variant="outline-primary" className="mt-2">
 				Search
 			</Button>
 		</Form>
