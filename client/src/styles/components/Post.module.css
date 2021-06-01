@@ -37,11 +37,33 @@
 }
 .userInfo{
     float: left;
-    border: 1px dotted;
+    border: 2px solid gainsboro;
     background: #f1f0f0;
     width: 100px;
-   flex: 1;
+    flex: 1;
 }
 .container{
     margin-bottom: 5px;
 }
+.embed{
+    text-align: center;
+    max-height: 400px;
+    max-width: 100% auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.embed img{
+    max-height: 400px
+}
+.editButton{
+    float: right;
+    border:  1px solid;
+    border-radius: 20%;
+    color: lightslategray;
+    background: none;
+}
+.textLeft{
+    text-align: left;
+    opacity: 0.5;
+}
+

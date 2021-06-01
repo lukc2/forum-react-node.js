@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styles from "../../styles/components/Thread.module.css";
 import Card from "react-bootstrap/Card";
-import { faThumbsUp, faComments } from "@fortawesome/free-solid-svg-icons";
+import { faThumbsUp, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Moment from "moment";
 
 const Thread = (props) => {
   return (
@@ -20,6 +21,7 @@ const Thread = (props) => {
               }
               className="col-12 "
             >
+              {props.thread.closed ? "(Closed) " : ""}
               <b>{props.thread.name}</b>
             </Link>
           </Card.Title>
@@ -34,8 +36,8 @@ const Thread = (props) => {
               </div>
 
               <span className="col-3 float-right">
-                Posts <FontAwesomeIcon icon={faComments} /> :{" "}
-                {props.thread.reputation}
+                 <FontAwesomeIcon icon={faCalendar} /> :{" "}
+                {Moment(props.thread.created_at).format("DD.MM.yyy hh:mm")}     
               </span>
             </span>
           </div>
