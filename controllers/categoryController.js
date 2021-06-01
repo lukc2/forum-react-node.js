@@ -14,6 +14,23 @@ module.exports = {
             })
         })
     },
+    searchThreads: function (req, res) {
+        const string = req.body.string;
+        db.Thread.findAll({
+            where: {
+                name:{
+                    [Op.iLike]: '%'+string+'%'
+                }
+            }
+        }).then(data => {
+            res.json(data);
+        }).catch(err => {
+            res.json({
+                success: false,
+                errors: err
+            })
+        })
+    },
     //http://localhost:3000/api/forum/:categoryId GET
     viewCategory: function (req, res) {
         const category_id = req.params.categoryId;
