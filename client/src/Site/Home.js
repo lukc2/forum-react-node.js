@@ -1,8 +1,8 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 // import { Link } from "react-router-dom";
-import Categories from "./utils/Categories";
-import ThreadList from "./components/View/ThreadList";
+import Categories from "./../utils/Categories";
+import ThreadList from "./../components/View/ThreadList";
 import {useState} from "react";
 
 export default function Home() {

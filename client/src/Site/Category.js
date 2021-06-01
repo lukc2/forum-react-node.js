@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Route } from "react-router-dom";
-import ThreadList from "./ThreadList";
-import ThreadView from "./ThreadView";
+import ThreadList from "../components/View/ThreadList";
+import ThreadView from "../components/View/ThreadView";
 import { useParams } from "react-router";
-import AddThread from "./AddThread";
+import AddThread from "../components/View/AddThread";
 
 
-export default function Category({ props }) {
+export default function Category({ match }) {
   let { id } = useParams();
   const categoriesJSON = [
     {
