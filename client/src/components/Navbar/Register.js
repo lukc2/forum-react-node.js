@@ -1,91 +1,104 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import UserInfo from "../../utils/UserInfo";
 import styles from "../../styles/components/Register.module.css";
-import PwdMeter from "../PwdMeter";
+import Password from "../Password";
+import axios from "axios";
+
 export default function Register(props) {
 	const [login, setLogin] = useState("");
+	const [nickName, setNickName] = useState("");
 	const [password, setPassword] = useState("");
-	const [passwordConfirm, setPasswordConfirm] = useState("");
+	const [email, setEmail] = useState("");
+	const [validForm, setValidForm] = useState(false);
 	const [validPassword, setValidPassword] = useState(false);
-	const [errors, setErrors] = useState({});
+	const [errors, setErrors] = useState([]);
 
-	const loginHandler = (e) => {
-		setLogin(e.target.value);
-	};
-	//TODO fix error message text
-	const passwordHandler = (e) => {
-		setPassword(e.target.value);
-		let err = {};
-		if (passwordConfirm !== e.target.value) {
-			err = { ...err, match: "Passwords do not match!" };
-			setValidPassword(false);
-		} else {
-			setValidPassword(true);
+	useEffect(() => {
+		//* validation
+		const err = [];
+		if (login.length < 4) {
+			err.push("Login must be at least 4 characters");
 		}
-		if (passwordConfirm.length < 3) {
-			err = { ...err, length: "Password is to short!" };
-			setValidPassword(false);
+		if (
+			!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+				email
+			)
+		) {
+			err.push("Incorect email address");
+		}
+		if (nickName.length < 4) {
+			err.push("Nickname must be at least 4 characters");
 		}
 		setErrors(err);
-	};
-	const passwordConfirmHandler = (e) => {
-		setErrors({});
-		setPasswordConfirm(e.target.value);
-		if (password !== e.target.value) {
-			setErrors({ ...errors, match: "Passwords do not match!" });
-			setValidPassword(false);
-		} else {
-			setValidPassword(true);
-		}
-	};
+		setValidForm(err.length > 0 || !validPassword);
+	}, [login, email, nickName, validPassword]);
+
 	const submitHandler = () => {
-		//TODO po udanej rejestracji
-		console.log(login, password);
+		axios({
+			method: "post",
+			url: "/api/signin",
+			data: { name: nickName, email, login, password },
+		})
+			.then((result) => {
+				if (result.data.success) {
+					// TODO proper messages
+					//! you need to log in
+				} else {
+					// TODO proper error messages
+					console.error(result.data.errors);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				alert("axios error");
+			});
 		UserInfo.setNickname("Jakiś nick z bazy");
 		UserInfo.setLoggedIn(true);
 		props.closePopup();
 	};
+	const errorsArray = errors.map((err) => <li>{err}</li>);
 	return (
 		<div className={styles.container}>
-			<Form>
-				<Form.Group>
-					<Form.Label>Login</Form.Label>
-					<Form.Control
-						type="text"
-						onChange={loginHandler}
-					></Form.Control>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Password</Form.Label>
-					<Form.Control type="password" onChange={passwordHandler} />
-					<Form.Text>
-						Your password must be 4-20 characters long, contain
-						letters and numbers
-					</Form.Text>
-					{password ? <PwdMeter password={password} /> : ""}
-					{errors.length ? (
-						<div className="text-danger">{errors.length}</div>
-					) : (
-						""
-					)}
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Confirm password</Form.Label>
-					<Form.Control
-						type="password"
-						onChange={passwordConfirmHandler}
-					/>
-					{errors.match ? (
-						<div className="text-danger">{errors.match}</div>
-					) : (
-						""
-					)}
-				</Form.Group>
-			</Form>
+			<Form.Group>
+				<Form.Label>Login</Form.Label>
+				<Form.Control
+					type="text"
+					onChange={(e) => setLogin(e.target.value)}
+					required
+				/>
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>NickName</Form.Label>
+				<Form.Control
+					type="text"
+					onChange={(e) => setNickName(e.target.value)}
+					value={nickName}
+					required
+				/>
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>Email</Form.Label>
+				<Form.Control
+					type="email"
+					required
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+				/>
+			</Form.Group>
+			<Password
+				password={password}
+				setPassword={setPassword}
+				valid={setValidPassword}
+			/>
+			{errors.length > 0 ? (
+				<div className="alert alert-danger">
+					<ul>{errorsArray}</ul>
+				</div>
+			) : null}
 			<Button
 				onClick={submitHandler}
-				disabled={!validPassword}
+				disabled={validForm}
 				className={styles.button}
 			>
 				Register
