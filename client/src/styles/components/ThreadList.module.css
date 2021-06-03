@@ -1,0 +1,18 @@
+.container{
+    margin-top: 1.4rem ;
+}
+.nameHeader{
+    margin-left: 13%  ;
+}
+.addThread{
+    width: fit-content;
+    padding: 5px;
+    
+    border: solid 1px gray;
+    margin: auto;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 25px;
+    border-radius: 10em;
+    ;
+}

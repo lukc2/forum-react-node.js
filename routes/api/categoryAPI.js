@@ -3,6 +3,7 @@ const categoryController = require("../../controllers/categoryController");
 const { check } = require('express-validator');
 
 router.route("/").get(categoryController.listCategories);
+router.route("/search").get(categoryController.searchThreads);
 //READ
 router.route("/:categoryId").get(categoryController.viewCategory);
 router.route("/:categoryId/:threadId").get(categoryController.viewThread);

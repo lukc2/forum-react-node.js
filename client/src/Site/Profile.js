@@ -366,7 +366,7 @@ export default function Profile() {
 								<Row>
 									<Col>
 										<span className="font-weight-bold">
-											{profile.reputation}
+											{profile.reputation || 0}
 										</span>
 										<br />
 										<small>Reputation</small>

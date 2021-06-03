@@ -1,0 +1,69 @@
+.item{
+
+    font-size: 17px;
+    
+}
+.statsThread{
+    
+    color: #a1a196;
+    right: 0px;   
+ 
+}
+.reputationPanel{
+    color: #a1a196;
+    margin-right: 10px;
+    left: 10px;
+}
+.thumbsUp{
+    float: left;
+    margin-right: 15px;
+
+    color: black;
+    cursor: pointer;
+    
+}
+.thumbsDown{
+    float: left;
+    margin-top: 2px;
+    margin-right: 15px;
+
+    color: black;
+    cursor: pointer;
+}
+.reps{
+    float: left;
+
+    margin-right: 15px;
+}
+.userInfo{
+    float: left;
+    border: 2px solid gainsboro;
+    background: #f1f0f0;
+    width: 100px;
+    flex: 1;
+}
+.container{
+    margin-bottom: 5px;
+}
+.embed{
+    text-align: center;
+    max-height: 400px;
+    max-width: 100% auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.embed img{
+    max-height: 400px
+}
+.editButton{
+    float: right;
+    border:  1px solid;
+    border-radius: 20%;
+    color: lightslategray;
+    background: none;
+}
+.textLeft{
+    text-align: left;
+    opacity: 0.5;
+}
+
