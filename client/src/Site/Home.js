@@ -2,6 +2,7 @@ import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Categories from "../utils/Categories";
+import { toast } from "react-toastify";
 export default function Home(props) {
 	//Zastąpić przez pobranie z bazy
 	const categoriesJSON = [
@@ -16,9 +17,8 @@ export default function Home(props) {
 			link: "/category/2",
 		},
 	];
-	// TODO create msg prop up
 	if (props.history.location.state?.msg)
-		console.log(props.history.location.state.msg); //msg from redirect
+		toast.info(props.history.location.state.msg);
 
 	Categories.setCategories(categoriesJSON);
 	const categoriesList = categoriesJSON.map((item) => {

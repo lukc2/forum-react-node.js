@@ -3,6 +3,7 @@ import { Button, Card, Col, Form, Row, Table } from "react-bootstrap";
 import styles from "../styles/Profile.module.css";
 import uniqid from "uniqid";
 import axios from "axios";
+import { toast } from "react-toastify";
 export default function AdminPanel() {
 	// TODO check if newForum is working correctly
 	const [newForum, setNewForum] = useState("");
@@ -32,9 +33,10 @@ export default function AdminPanel() {
 		})
 			.then((response) => {
 				if (response.data.success) {
-					// TODO show message
+					toast.success(response.data.msg);
 				} else {
 					console.log(response.data);
+					toast.error(response.data.msg);
 				}
 			})
 			.catch((err) => console.error(err));
@@ -47,23 +49,30 @@ export default function AdminPanel() {
 		})
 			.then((response) => {
 				if (response.data.success) {
-					// TODO show message
+					toast.success(response.data.msg);
 				} else {
 					console.log(response.data);
+					toast.error(response.data.msg);
 				}
 			})
 			.catch((err) => console.error(err));
 	};
 	const takeModHandler = (id) => {
 		alert("No backend implentation found");
-		// axios({ method: "get", url: "/api/adminpanel" ,data:{updatedId:id}})
-		// .then((response)=>{
-		// 	if(response.data.success){
-		// 		// TODO show message
-		// 	}else{
-		// 		console.log(response.data)
-		// 	}
-		// }).catch((err)=>console.error(err));
+		axios({
+			method: "get",
+			url: "/api/adminpanel",
+			data: { updatedId: id },
+		})
+			.then((response) => {
+				if (response.data.success) {
+					toast.success(response.data.msg);
+				} else {
+					console.log(response.data);
+					toast.error(response.data.msg);
+				}
+			})
+			.catch((err) => console.error(err));
 	};
 	const banHandler = (id) => {
 		axios({
@@ -73,9 +82,10 @@ export default function AdminPanel() {
 		})
 			.then((response) => {
 				if (response.data.success) {
-					// TODO show message
+					toast.success(response.data.msg);
 				} else {
 					console.log(response.data);
+					toast.error(response.data.msg);
 				}
 			})
 			.catch((err) => console.error(err));

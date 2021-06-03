@@ -25,10 +25,8 @@ export default function LogInOut() {
 					onClick={() => {
 						axios({ method: "get", url: "/api/logout" })
 							.then((result) => {
-								if (result.data.success) {
-									UserInfo.destroy();
-									statusChange();
-								}
+								UserInfo.destroy();
+								statusChange();
 							})
 							.catch((err) => console.error(err));
 					}}

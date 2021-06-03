@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
-import UserInfo from "../../utils/UserInfo";
 import styles from "../../styles/components/Register.module.css";
 import Password from "../Password";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function Register(props) {
 	const [login, setLogin] = useState("");
@@ -42,20 +42,16 @@ export default function Register(props) {
 		})
 			.then((result) => {
 				if (result.data.success) {
-					// TODO proper messages
-					//! you need to log in
+					toast.success("Account created, please log in");
 				} else {
-					// TODO proper error messages
 					console.error(result.data.errors);
+					toast.error("Check console");
+					props.closePopup();
 				}
 			})
 			.catch((err) => {
 				console.log(err);
-				alert("axios error");
 			});
-		UserInfo.setNickname("Jakiś nick z bazy");
-		UserInfo.setLoggedIn(true);
-		props.closePopup();
 	};
 	const errorsArray = errors.map((err) => <li>{err}</li>);
 	return (
