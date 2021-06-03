@@ -1,15 +1,15 @@
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 
 require("dotenv").config();
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'postgres',
-    protocol: 'postgres',
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
-        }
-    }
+	dialect: "postgres",
+	protocol: "postgres",
+	dialectOptions: {
+		ssl: {
+			require: true,
+			rejectUnauthorized: false,
+		},
+	},
 });
 const db = {};
 db.Sequelize = Sequelize;
@@ -24,60 +24,54 @@ db.Rank = require("../models/Rank")(sequelize, Sequelize);
 
 //thread-category
 db.Thread.belongsTo(db.Category, {
-    foreignKey: 'category_id',
-    allowNull: false
+	foreignKey: "category_id",
+	allowNull: false,
 });
 db.Category.hasMany(db.Thread, {
-    foreignKey: 'category_id',
-    allowNull: false
+	foreignKey: "category_id",
+	allowNull: false,
 });
 //post-thread
 db.Post.belongsTo(db.Thread, {
-    foreignKey: 'thread_id',
-    allowNull: false
+	foreignKey: "thread_id",
+	allowNull: false,
 });
 db.Thread.hasMany(db.Post, {
-    foreignKey: 'thread_id',
-    allowNull: false
+	foreignKey: "thread_id",
+	allowNull: false,
 });
 //post-user
 db.Post.belongsTo(db.User, {
-    foreignKey: 'user_id',
-    allowNull: false
+	foreignKey: "user_id",
+	allowNull: false,
 });
 db.User.hasMany(db.Post, {
-    foreignKey: 'user_id',
-    allowNull: false
+	foreignKey: "user_id",
+	allowNull: false,
 });
 //thread-user
 db.Thread.belongsTo(db.User, {
-    foreignKey: 'user_id',
-    allowNull: false
+	foreignKey: "user_id",
+	allowNull: false,
 });
 db.User.hasMany(db.Thread, {
-    foreignKey: 'user_id',
-    allowNull: false
+	foreignKey: "user_id",
+	allowNull: false,
 });
 //rank-user
 db.User.belongsTo(db.Rank, {
-    foreignKey: 'rank_id',
-    allowNull: false
+	foreignKey: "rank_id",
+	allowNull: false,
 });
 db.Rank.hasMany(db.User, {
-    foreignKey: 'rank_id',
-    allowNull: false
+	foreignKey: "rank_id",
+	allowNull: false,
 });
 
-db.Rank.sync()
-    .then(db.Category.sync()
-    .then(()=>db.User.sync()
-    .then(()=>db.Thread.sync()
-    .then(()=>db.Post.sync()
-    ))));
-
-
-;
-
-
+db.Rank.sync().then(
+	db.Category.sync().then(() =>
+		db.User.sync().then(() => db.Thread.sync().then(() => db.Post.sync()))
+	)
+);
 
 module.exports = db;

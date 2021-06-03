@@ -13,7 +13,7 @@ export function Search() {
 		axios({
 			method: "GET",
 			url: "/api/search",
-			params: { search: searchValue },
+			params: { string: searchValue },
 		})
 			.then((result) => {
 				const dataView = result.data?.map((item) => (

@@ -1,18 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { useHistory } from "react-router";
+import axios from "axios";
+import dateFormat from "dateformat";
+import { toast } from "react-toastify";
 import styles from "../styles/Profile.module.css";
 import uniqid from "uniqid";
 import Password from "../components/Password";
 import UserInfo from "../utils/UserInfo";
-import axios from "axios";
-import dateFormat from "dateformat";
-// import axios from "axios";
+
 export default function Profile() {
 	const [errors, setErrors] = useState([]);
 	const [image, setImage] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordValid, setPasswordValid] = useState(false);
+	const [disableSubmit, setDisableSubmit] = useState(false);
 	const disableInput = useRef(true);
 	const history = useHistory();
 	const fileToDataUri = (file) =>
@@ -25,11 +27,11 @@ export default function Profile() {
 		});
 
 	let staticData = useRef({
-		name: "test",
-		email: "test@tyeset",
-		birthDate: new Date(),
+		name: "",
+		email: "",
+		birthDate: dateFormat(new Date(), "yyyy-mm-dd"),
 		image: "",
-		footer: "tawetwaraw",
+		footer: "",
 
 		reputation: 20,
 		postCount: 10,
@@ -38,50 +40,57 @@ export default function Profile() {
 	const [profile, setProfile] = useState({ ...staticData.current });
 	let firstLoad = useRef(true);
 	//! DB related
-	useEffect(() => {
-		axios({ method: "get", url: "/api/profile" })
+	const getData = async () => {
+		axios({ method: "get", url: "api/userpanel" })
 			.then((result) => {
 				const data = {
 					name: result.data.nickname,
 					email: result.data.email,
-					birthDate: result.data.date_of_birth,
+					birthDate: dateFormat(
+						result.data.date_of_birth,
+						"yyyy-mm-dd"
+					),
 					image: result.data.avatar,
-					footer: result.data.footer,
+					footer: result.data.footer || "",
 					reputation: result.data.reputationCount,
 					postCount: result.data.postCount,
 					joinDate: result.data.joinDate,
 				};
 				staticData.current = data;
 				firstLoad.current = false;
-				disableInput.current =
-					data.name.localeCompare(UserInfo.getNickname()) !== 0;
+				disableInput.current = false;
 				setProfile({ ...data });
 				setImage(data.image);
 			})
-			.catch((err) => {
-				console.log(err);
-			});
+			.catch((err) => console.log(err));
+	};
+	useEffect(() => {
+		getData();
 	}, []);
 	const submitHandler = (e) => {
 		e.preventDefault();
 		if (disableInput.current) return;
 		if (!window.confirm("Are you sure to commit this changes?")) return;
-		// TODO add date to submit
 		if (
-			staticData.current.name.localeCompare(profile.name) === 0 ||
-			staticData.current.email.localeCompare(profile.email) === 0
+			staticData.current.name.localeCompare(profile.name) === 0 &&
+			staticData.current.email.localeCompare(profile.email) === 0 &&
+			staticData.current.birthDate.localeCompare(profile.birthDate) === 0
 		) {
-			alert("No data was changed");
 			return;
 		}
-		alert("confirmed");
 		axios({
 			method: "POST",
 			url: "/api/userpanel",
-			data: { nickname: profile.name, email: profile.email },
+			data: {
+				nickname: profile.name,
+				email: profile.email,
+				date: profile.birthDate,
+			},
 		})
 			.then((response) => {
-				//TODO display msg
+				if (response.data.success) toast.success(response.data.msg);
+				else toast.error(response.data.msg);
+				getData();
 			})
 			.catch((err) => console.error(err));
 	};
@@ -92,7 +101,6 @@ export default function Profile() {
 			return;
 		}
 		fileToDataUri(file).then((dataUri) => {
-			console.log(dataUri);
 			setImage(dataUri);
 		});
 	};
@@ -101,17 +109,21 @@ export default function Profile() {
 		axios({
 			method: "post",
 			url: "/api/userpanel/avatar ",
-			data: { image },
+			data: { avatar: image },
 		})
 			.then((response) => {
-				// TODO display msg
+				if (response.data.success) toast.success(response.data.msg);
+				else toast.error(response.data.msg);
+				getData();
 			})
 			.catch((err) => console.error(err));
 	};
 	const passwordHandler = () => {
 		axios({ method: "put", url: "/api/userpanel", data: { password } })
 			.then((response) => {
-				// TODO display msg
+				if (response.data.success) toast.success(response.data.msg);
+				else toast.error(response.data.msg);
+				getData();
 			})
 			.catch((err) => console.error(err));
 		setPassword("");
@@ -123,7 +135,9 @@ export default function Profile() {
 			data: { footer: profile.footer },
 		})
 			.then((response) => {
-				//TODO display msg
+				if (response.data.success) toast.success(response.data.msg);
+				else toast.error(response.data.msg);
+				getData();
 			})
 			.catch((err) => console.error(err));
 	};
@@ -145,7 +159,8 @@ export default function Profile() {
 	useEffect(() => {
 		//* validation
 		let errors = [];
-		if (profile.name.length < 4) {
+		let disable = false;
+		if ((profile.name?.length || 0) < 4) {
 			errors.push("Name is too short");
 		}
 		if (
@@ -155,8 +170,10 @@ export default function Profile() {
 		) {
 			errors.push("Incorect email address");
 		}
-
 		if (!firstLoad.current) setErrors(errors);
+		if (errors.length > 0) disable = true;
+		setDisableSubmit(disable);
+		// TODO validation of birth date
 	}, [profile]);
 
 	const errMessages =
@@ -287,7 +304,6 @@ export default function Profile() {
 										type="date"
 										required
 										value={profile.birthDate}
-										// TODO find some possible edit
 										onChange={(e) =>
 											setProfile({
 												...profile,
@@ -300,7 +316,10 @@ export default function Profile() {
 							</Row>
 						</Card.Body>
 						{errMessages}
-						<Button type="submit" disabled={disableInput.current}>
+						<Button
+							type="submit"
+							disabled={disableInput.current || disableSubmit}
+						>
 							Save
 						</Button>
 					</Card>
@@ -347,7 +366,7 @@ export default function Profile() {
 								<Row>
 									<Col>
 										<span className="font-weight-bold">
-											{profile.reputation}
+											{profile.reputation || 0}
 										</span>
 										<br />
 										<small>Reputation</small>
@@ -401,6 +420,7 @@ export default function Profile() {
 									disabled={disableInput.current}
 								/>
 								<Button
+									className="mt-3"
 									onClick={footerHandler}
 									disabled={disableInput.current}
 								>

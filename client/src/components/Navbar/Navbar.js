@@ -12,9 +12,8 @@ export default function OurNavbar() {
 	const categories = useRef(Categories.getCategories());
 	useEffect(() => {
 		if (categories === null) {
-			axios({ method: "get", url: "/api/categories" })
+			axios({ method: "get", url: "/api/forum/" })
 				.then((result) => {
-					//TODO FIXME with proper mapping
 					const data = result.data?.map((item) => {
 						return {
 							id: item.id,
@@ -30,7 +29,7 @@ export default function OurNavbar() {
 					console.log(err);
 				});
 		}
-	}, [reload]);
+	}, [reload, categories]);
 	if (categories.current === null) {
 		const categoriesJSON = [
 			{
