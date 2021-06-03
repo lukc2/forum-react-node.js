@@ -29,7 +29,7 @@ export default function Profile() {
 	let staticData = useRef({
 		name: "",
 		email: "",
-		birthDate: new Date(),
+		birthDate: dateFormat(new Date(), "yyyy-mm-dd"),
 		image: "",
 		footer: "",
 
@@ -40,13 +40,16 @@ export default function Profile() {
 	const [profile, setProfile] = useState({ ...staticData.current });
 	let firstLoad = useRef(true);
 	//! DB related
-	useEffect(() => {
+	const getData = async () => {
 		axios({ method: "get", url: "api/userpanel" })
 			.then((result) => {
 				const data = {
 					name: result.data.nickname,
 					email: result.data.email,
-					birthDate: result.data.date_of_birth,
+					birthDate: dateFormat(
+						result.data.date_of_birth,
+						"yyyy-mm-dd"
+					),
 					image: result.data.avatar,
 					footer: result.data.footer || "",
 					reputation: result.data.reputationCount,
@@ -60,6 +63,9 @@ export default function Profile() {
 				setImage(data.image);
 			})
 			.catch((err) => console.log(err));
+	};
+	useEffect(() => {
+		getData();
 	}, []);
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -67,9 +73,8 @@ export default function Profile() {
 		if (!window.confirm("Are you sure to commit this changes?")) return;
 		if (
 			staticData.current.name.localeCompare(profile.name) === 0 &&
-			staticData.current.email.localeCompare(profile.email) === 0
-			// TODO valid birthdate
-			// || staticData.current.birthDate.localeCompare(profile.birthDate) === 0
+			staticData.current.email.localeCompare(profile.email) === 0 &&
+			staticData.current.birthDate.localeCompare(profile.birthDate) === 0
 		) {
 			return;
 		}
@@ -85,6 +90,7 @@ export default function Profile() {
 			.then((response) => {
 				if (response.data.success) toast.success(response.data.msg);
 				else toast.error(response.data.msg);
+				getData();
 			})
 			.catch((err) => console.error(err));
 	};
@@ -108,6 +114,7 @@ export default function Profile() {
 			.then((response) => {
 				if (response.data.success) toast.success(response.data.msg);
 				else toast.error(response.data.msg);
+				getData();
 			})
 			.catch((err) => console.error(err));
 	};
@@ -116,6 +123,7 @@ export default function Profile() {
 			.then((response) => {
 				if (response.data.success) toast.success(response.data.msg);
 				else toast.error(response.data.msg);
+				getData();
 			})
 			.catch((err) => console.error(err));
 		setPassword("");
@@ -129,6 +137,7 @@ export default function Profile() {
 			.then((response) => {
 				if (response.data.success) toast.success(response.data.msg);
 				else toast.error(response.data.msg);
+				getData();
 			})
 			.catch((err) => console.error(err));
 	};

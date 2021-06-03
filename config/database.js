@@ -4,13 +4,12 @@ require("dotenv").config();
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
 	dialect: "postgres",
 	protocol: "postgres",
-	// TODO remove comment before merge
-	// dialectOptions: {
-	//     ssl: {
-	//         require: true,
-	//         rejectUnauthorized: false
-	//     }
-	// }
+	dialectOptions: {
+		ssl: {
+			require: true,
+			rejectUnauthorized: false,
+		},
+	},
 });
 const db = {};
 db.Sequelize = Sequelize;
