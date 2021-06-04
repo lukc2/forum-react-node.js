@@ -5,12 +5,15 @@ import uniqid from "uniqid";
 import axios from "axios";
 import { toast } from "react-toastify";
 export default function AdminPanel() {
-	// TODO check if newForum is working correctly
 	const [newForum, setNewForum] = useState("");
 	const [userData, setUserData] = useState([]);
 	const [categories, setCategories] = useState([]);
 	const categoriesList = useRef();
 	const tableBodyUsers = useRef();
+	const [gfyjifgy, setGfyjifgy] = useState(false);
+	const refresh = () => {
+		setGfyjifgy(!gfyjifgy);
+	};
 	useEffect(() => {
 		axios({ method: "get", url: "/api/forum" })
 			.then((response) => {
@@ -23,20 +26,23 @@ export default function AdminPanel() {
 				setUserData(response.data);
 			})
 			.catch((err) => console.error(err));
-	}, []);
+	}, [gfyjifgy]);
 	const forumSubmitHandler = (e) => {
 		e.preventDefault();
 		axios({
 			method: "POST",
-			url: "/api/category/create",
+			url: "/api/adminpanel",
 			data: { categoryName: newForum },
 		})
 			.then((response) => {
 				if (response.data.success) {
 					toast.success(response.data.msg);
+					refresh();
 				} else {
 					console.log(response.data);
-					toast.error(response.data.msg);
+					response.data?.errors?.errors?.map((err) =>
+						toast.error(err.message)
+					);
 				}
 			})
 			.catch((err) => console.error(err));
@@ -50,6 +56,7 @@ export default function AdminPanel() {
 			.then((response) => {
 				if (response.data.success) {
 					toast.success(response.data.msg);
+					refresh();
 				} else {
 					console.log(response.data);
 					toast.error(response.data.msg);
@@ -59,6 +66,7 @@ export default function AdminPanel() {
 	};
 	const takeModHandler = (id) => {
 		alert("No backend implentation found");
+		return;
 		axios({
 			method: "get",
 			url: "/api/adminpanel",
@@ -67,6 +75,7 @@ export default function AdminPanel() {
 			.then((response) => {
 				if (response.data.success) {
 					toast.success(response.data.msg);
+					refresh();
 				} else {
 					console.log(response.data);
 					toast.error(response.data.msg);
@@ -83,6 +92,7 @@ export default function AdminPanel() {
 			.then((response) => {
 				if (response.data.success) {
 					toast.success(response.data.msg);
+					refresh();
 				} else {
 					console.log(response.data);
 					toast.error(response.data.msg);
@@ -94,13 +104,14 @@ export default function AdminPanel() {
 	categoriesList.current = categories.map((c) => (
 		<li key={uniqid()}>{c.name}</li>
 	));
-
 	tableBodyUsers.current = userData.map((user) => (
 		<tr key={uniqid()}>
 			<td>{user.id}</td>
-			<td>{user.nickName}</td>
 			<td>
-				{user.rank === 3 ? (
+				{user.nickname} {user.deleted ? " BANNED" : null}
+			</td>
+			<td>
+				{user.rank_id === 3 ? (
 					<Button
 						variant="success"
 						onClick={() => makeModHandler(user.id)}
@@ -133,7 +144,7 @@ export default function AdminPanel() {
 						<ul>{categoriesList.current}</ul>
 					</Card.Body>
 				</Card>
-				<Card>
+				<Card className="mt-1">
 					<Card.Body>
 						<Card.Title>Create New Forum</Card.Title>
 						<Form onSubmit={(e) => forumSubmitHandler(e)}>

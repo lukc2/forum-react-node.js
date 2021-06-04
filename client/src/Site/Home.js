@@ -1,7 +1,6 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Categories from "../utils/Categories";
 import ThreadList from "./../components/View/ThreadList";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -57,7 +56,6 @@ export default function Home(props) {
 		},
 	]);
 
-	Categories.setCategories(categoriesJSON);
 	const categoriesList = categoriesJSON.map((item) => {
 		return (
 			<Row key={item.id}>

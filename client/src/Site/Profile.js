@@ -76,6 +76,8 @@ export default function Profile() {
 	const submitHandler = (e) => {
 		e.preventDefault();
 		if (disableInput.current) return;
+		// TODO
+		// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/captureTab
 		if (!window.confirm("Are you sure to commit this changes?")) return;
 		if (
 			staticData.current.name.localeCompare(profile.name) === 0 &&
@@ -256,8 +258,8 @@ export default function Profile() {
 					<Card className={styles.card + " mb-3"}>
 						<Card.Body className={styles.card_body}>
 							<Card.Title>
-								<FontAwesomeIcon icon={faUserCircle} />
-								Edit profile
+								<FontAwesomeIcon icon={faUserCircle} /> Edit
+								profile
 							</Card.Title>
 							<Row>
 								<Col sm="3">
@@ -333,8 +335,8 @@ export default function Profile() {
 						<Card className={styles.card}>
 							<Card.Body className={styles.card_body}>
 								<h6 className="d-flex align-items-center mb-3">
-									<FontAwesomeIcon icon={faLock} />
-									Change password
+									<FontAwesomeIcon icon={faLock} /> Change
+									password
 								</h6>
 								<Password
 									password={password}
@@ -360,8 +362,7 @@ export default function Profile() {
 						>
 							<Card.Body className={styles.card_body}>
 								<h6 className="d-flex align-items-center mb-3">
-									<FontAwesomeIcon icon={faChartLine} />
-									Stats
+									<FontAwesomeIcon icon={faChartLine} /> Stats
 								</h6>
 								<Row>
 									<Col>
