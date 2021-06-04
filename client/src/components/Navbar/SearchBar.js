@@ -13,7 +13,6 @@ export default function SearchBar({ value, setValue }) {
 		const get = new URLSearchParams("");
 		get.set("search", search);
 		history.push(`/search?${get.toString()}`);
-		console.log(value);
 		if (value) setValue(search);
 	};
 	return (

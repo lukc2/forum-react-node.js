@@ -9,42 +9,37 @@ import axios from "axios";
 import UserInfo from "../../utils/UserInfo";
 export default function OurNavbar() {
 	const [reload, setReload] = useState(false);
-	const categories = useRef(Categories.getCategories());
+	const categoriesJSON = [
+		{
+			id: "1",
+			name: "Category 1",
+			link: "/category/1",
+		},
+		{
+			id: "2",
+			name: "Category 2",
+			link: "/category/2",
+		},
+	];
+	const categories = useRef(categoriesJSON);
 	useEffect(() => {
-		if (categories === null) {
-			axios({ method: "get", url: "/api/forum/" })
-				.then((result) => {
-					const data = result.data?.map((item) => {
-						return {
-							id: item.id,
-							name: item.name,
-							link: `/category/${item.id}`,
-						};
-					});
-					Categories.setCategories(data);
-					categories.current = data;
-					setReload(!reload);
-				})
-				.catch((err) => {
-					console.log(err);
+		axios({ method: "get", url: "/api/forum/" })
+			.then((result) => {
+				const data = result.data?.map((item) => {
+					return {
+						id: item.id,
+						name: item.name,
+						link: `/category/${item.id}`,
+					};
 				});
-		}
-	}, [reload, categories]);
-	if (categories.current === null) {
-		const categoriesJSON = [
-			{
-				id: "1",
-				name: "Category 1",
-				link: "/category/1",
-			},
-			{
-				id: "2",
-				name: "Category 2",
-				link: "/category/2",
-			},
-		];
-		categories.current = categoriesJSON;
-	}
+				Categories.setCategories(data); //* TODO verify if its needed
+				categories.current = data;
+				setReload(!reload);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const CategoryDropDownItems =
 		categories.current === null
@@ -69,7 +64,7 @@ export default function OurNavbar() {
 					<LinkContainer to="/">
 						<Nav.Link>Home</Nav.Link>
 					</LinkContainer>
-					<NavDropdown title="Category" id="basic-nav-dropdown">
+					<NavDropdown title="Categories" id="basic-nav-dropdown">
 						{CategoryDropDownItems}
 					</NavDropdown>
 					{UserInfo.getLoggedIn() && UserInfo.getRank() === "1" ? (

@@ -7,31 +7,34 @@ export function Search() {
 	const search = useLocation().search;
 	const staticSearch = new URLSearchParams(search).get("search");
 	const [searchValue, setSearchValue] = useState(staticSearch);
-	const [searchResult, setSearchResult] = useState();
+	const [searchResultView, setSearchResultView] = useState();
 	useEffect(() => {
-		//TODO fix path, do mapping
 		axios({
 			method: "GET",
-			url: "/api/search",
-			params: { string: searchValue },
+			url: "/api/forum/search",
+			params: { search: searchValue },
 		})
 			.then((result) => {
+				//! renders 2 times, connects to db 1
 				const dataView = result.data?.map((item) => (
 					<div key={item.id}>{item.name}</div>
 				));
-				setSearchResult(dataView);
+
+				setSearchResultView(dataView);
 			})
 			.catch((error) => {
 				console.log(error);
+			})
+			.finally(() => {
+				setSearchValue(staticSearch);
 			});
-		setSearchValue(staticSearch);
 	}, [searchValue, staticSearch]);
 	return (
 		<>
 			<Row>
 				<Col>Testowy search: {searchValue}</Col>
 			</Row>
-			{searchResult}
+			{searchResultView}
 		</>
 	);
 }
