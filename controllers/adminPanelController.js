@@ -58,6 +58,36 @@ module.exports = {
 
         
     },
+    //http://localhost:3000/api/adminpanel/takemod PUT
+    takeMod : async (req, res) => {
+        const user = await db.User.findByPk(req.session.userId);
+        const updatedUser = req.body.updatedId
+
+        if(user.rank_id != 1)//tutaj zależy od tego jak jest w bazie, można ustalić że 1 to admin a 2 to mod
+        {
+            res.json({
+                success: false,
+                msg: "Nie masz uprawnien do korzystania z panelu administratora!"
+            }).end();
+            return; 
+        }
+
+        db.User.update(
+            {rank_id: 3},
+            {where: {id: updatedUser}} 
+        ).then(() => {
+            res.json({
+                success: true,
+                msg: "Uzytkownikowi zabrano moderatora!"
+            });
+        }).catch(err => {
+             res.json({
+                success: false,
+                errors: err,
+                msg:"Nie udalo sie zabrac moderatora!"         
+            })
+        });
+    },
     //http://localhost:3000/api/adminpanel DELETE
     banUser : async (req, res) => {
         const user = await db.User.findByPk(req.session.userId);
