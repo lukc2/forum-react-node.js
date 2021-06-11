@@ -8,6 +8,12 @@ import styles from "../styles/Profile.module.css";
 import uniqid from "uniqid";
 import Password from "../components/Password";
 import UserInfo from "../utils/UserInfo";
+import {
+	faChartLine,
+	faLock,
+	faUserCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Profile() {
 	const [errors, setErrors] = useState([]);
@@ -70,6 +76,8 @@ export default function Profile() {
 	const submitHandler = (e) => {
 		e.preventDefault();
 		if (disableInput.current) return;
+		// TODO
+		// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/captureTab
 		if (!window.confirm("Are you sure to commit this changes?")) return;
 		if (
 			staticData.current.name.localeCompare(profile.name) === 0 &&
@@ -250,10 +258,8 @@ export default function Profile() {
 					<Card className={styles.card + " mb-3"}>
 						<Card.Body className={styles.card_body}>
 							<Card.Title>
-								<i className="material-icons text-info mr-2">
-									account_circle
-								</i>
-								Edit profile
+								<FontAwesomeIcon icon={faUserCircle} /> Edit
+								profile
 							</Card.Title>
 							<Row>
 								<Col sm="3">
@@ -329,10 +335,8 @@ export default function Profile() {
 						<Card className={styles.card}>
 							<Card.Body className={styles.card_body}>
 								<h6 className="d-flex align-items-center mb-3">
-									<i className="material-icons text-info mr-2">
-										password
-									</i>
-									Change password
+									<FontAwesomeIcon icon={faLock} /> Change
+									password
 								</h6>
 								<Password
 									password={password}
@@ -358,10 +362,7 @@ export default function Profile() {
 						>
 							<Card.Body className={styles.card_body}>
 								<h6 className="d-flex align-items-center mb-3">
-									<i className="material-icons text-info mr-2">
-										trending_up
-									</i>
-									Stats
+									<FontAwesomeIcon icon={faChartLine} /> Stats
 								</h6>
 								<Row>
 									<Col>

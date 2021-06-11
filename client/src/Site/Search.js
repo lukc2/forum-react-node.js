@@ -7,7 +7,7 @@ export function Search() {
 	const search = useLocation().search;
 	const staticSearch = new URLSearchParams(search).get("search");
 	const [searchValue, setSearchValue] = useState(staticSearch);
-	const [searchResultView, setSearchResultView] = useState();
+	const [searchResult, setSearchResult] = useState();
 	useEffect(() => {
 		axios({
 			method: "GET",
@@ -16,11 +16,7 @@ export function Search() {
 		})
 			.then((result) => {
 				//! renders 2 times, connects to db 1
-				const dataView = result.data?.map((item) => (
-					<div key={item.id}>{item.name}</div>
-				));
-
-				setSearchResultView(dataView);
+				setSearchResult(result.data);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -29,12 +25,17 @@ export function Search() {
 				setSearchValue(staticSearch);
 			});
 	}, [searchValue, staticSearch]);
+	const threadList = searchResult?.map((thread) => {
+		return <Thread key={thread.id} thread={thread} />;
+	});
 	return (
 		<>
 			<Row>
-				<Col>Testowy search: {searchValue}</Col>
+				<Col>
+					<h2>Testowy search: {searchValue}</h2>
+				</Col>
 			</Row>
-			{searchResultView}
+			{threadList}
 		</>
 	);
 }

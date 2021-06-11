@@ -4,6 +4,7 @@ import { Button, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import UserInfo from "../../utils/UserInfo";
 import Popup from "./LoginRegisterPopup";
+import style from "../../styles/components/LogInOut.module.css";
 export default function LogInOut() {
 	const [showPopup, setPopup] = useState(false);
 	const togglePopup = () => {
@@ -13,9 +14,8 @@ export default function LogInOut() {
 	const statusChange = () => {
 		setStatus(!status); //forces render
 	};
-
 	const loggedInDropdown = (
-		<div className="mt-2">
+		<div className={`mt-2 ${style.fixRight}`}>
 			<NavDropdown title={UserInfo.getNickname()}>
 				<LinkContainer to="/profile">
 					<NavDropdown.Item>Profile</NavDropdown.Item>
