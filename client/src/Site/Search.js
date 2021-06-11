@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useLocation } from "react-router";
+import Thread from "../components/View/Thread";
 
 export function Search() {
 	const search = useLocation().search;
