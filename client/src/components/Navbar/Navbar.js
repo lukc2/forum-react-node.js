@@ -3,7 +3,6 @@ import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 import LogInOut from "./LogInOut";
-import Categories from "../../utils/Categories";
 import SearchBar from "./SearchBar";
 import axios from "axios";
 import UserInfo from "../../utils/UserInfo";
@@ -32,7 +31,6 @@ export default function OurNavbar() {
 						link: `/category/${item.id}`,
 					};
 				});
-				Categories.setCategories(data); //* TODO verify if its needed
 				categories.current = data;
 				setReload(!reload);
 			})

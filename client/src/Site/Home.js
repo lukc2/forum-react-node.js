@@ -1,13 +1,11 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Categories from "../utils/Categories";
 import ThreadList from "./../components/View/ThreadList";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Card from "react-bootstrap/Card";
-
 
 export default function Home(props) {
 	//Zastąpić przez pobranie z bazy
@@ -25,44 +23,42 @@ export default function Home(props) {
 	]);
 	const getCategory = async () => {
 		axios({ method: "get", url: "/api/forum/" })
-		.then((result) => {
-			const data = result.data?.map((item) => {
-				return {
-					id: item.id,
-					name: item.name,
-					link: `/category/${item.id}`,
-				};
-			});			
-			setCategoriesJSON(data)
-		})
-		.catch((err) => {
-			console.log(err);
-		});
-	}
-		
+			.then((result) => {
+				const data = result.data?.map((item) => {
+					return {
+						id: item.id,
+						name: item.name,
+						link: `/category/${item.id}`,
+					};
+				});
+				setCategoriesJSON(data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
 	useEffect(() => {
-		getCategory()
-	}, []); 
-	
+		getCategory();
+	}, []);
+
 	if (props.history.location.state?.msg)
 		toast.info(props.history.location.state.msg);
 
-
-	console.log(categoriesJSON)
+	console.log(categoriesJSON);
 	const categoriesList = categoriesJSON?.map((item) => {
 		return (
 			<div key={item.id} className=" mx-auto w-50">
 				<Card>
 					<Card.Body>
 						<Card.Title>
-							<Link to={item.link} style={{color: "black"}}>
+							<Link to={item.link} style={{ color: "black" }}>
 								<h3>{item.name}</h3>
 							</Link>
-						</Card.Title>	
+						</Card.Title>
 					</Card.Body>
 				</Card>
 			</div>
-
 		);
 	});
 	return (

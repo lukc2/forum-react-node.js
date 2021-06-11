@@ -1,0 +1,6 @@
+.fixRight {
+}
+.fixRight > div > div {
+	left: auto;
+	right: 0;
+}
