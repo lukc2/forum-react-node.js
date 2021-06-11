@@ -25,13 +25,9 @@ const PostList = (props) => {
     
    
 
-    const postList = props.source.map(post => {
-        console.log(post)
-        const user_temp = props.users.find(a => a.id === post.user_id)
-        const user = [user_temp, ranks[user_temp.rank_id-1].name] 
-
+    const postList = props.source?.map(post => {
 		return (
-            <Post key={post.id} activeUser={props.activeUser} user={user} post={post}/> 
+            <Post category={props.category} key={post.id} post={post}/> 
 		)
 	  })
     

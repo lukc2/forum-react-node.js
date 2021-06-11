@@ -10,28 +10,40 @@ import {useState} from "react";
 import Embed  from 'react-embed';
 import isImageUrl from 'is-image-url';
 import EditPost from "./EditPost";
+import UserInfo from "../../utils/UserInfo";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Post = (props) => {
-  const [post, setPost] = useState(props.post)
-  const [voted, setVoted] = useState(post.voted)
+  const [post] = useState(props.post)
   const [edit, setEdit] = useState(false)
   const thumbHandler = (val) => {
-    if(post.voted.includes(props.activeUser)){
-      setVoted(post.voted.filter(v => v !== props.activeUser))
-    }else{
-      setVoted([...post.voted, props.activeUser])
-    }
-    setPost({
-      id: post.id,
-      thread_id: post.thread_id,
-      user_id: post.user_id,
-      content: post.content,
-      attachement: post.attachement,
-      reputation: post.reputation+val,
-      created_at: post.created_at,
-      voted: voted,
-      updated_at: post.updated_at
+
+    axios({ method: "put", url: "api/forum/"+props.category+"/"+props.post.thread_id,data:{
+      postId: props.post.id,
+      vote: val
+    }  })
+    .then((result) => {       
+      if (result.data.success) {
+        // toast.success(result.data.msg);
+      } else {
+        console.error(result.data.errors);
+        toast.error(result.data.msg);
+      }
     })
+    .catch((err) => console.log(err));
+
+    // setPost({
+    //   id: post.id,
+    //   thread_id: post.thread_id,
+    //   user_id: post.user_id,
+    //   content: post.content,
+    //   attachement: post.attachement,
+    //   reputation: post.reputation+val,
+    //   created_at: post.created_at,
+    //   voted: voted,
+    //   updated_at: post.updated_at
+    // })
   }
   var postDate = Moment(props.post.timestamp).format("DD.MM.yyy hh:mm");
   var embed;
@@ -67,12 +79,12 @@ const Post = (props) => {
 
       <Card>
         <Card.Body>         
-            {post.user_id===props.activeUser ? <button className={styles.editButton} onClick={handleEdit}>Edit</button> :<></>}
+            {post.user_id===UserInfo.getId() ? <button className={styles.editButton} onClick={handleEdit}>Edit</button> :<></>}
             {edit ? <EditPost post={post}/> :  items()}               
 
           <div className="border-top">
             <div className="col-5 float-left">       
-              <div style={voted.includes(props.activeUser)?{pointerEvents: "none", opacity: "0.4"}:{opacity: "1"}}>
+              <div style={post.voted.includes(UserInfo.getId())?{pointerEvents: "none", opacity: "0.4"}:{opacity: "1"}}>
                 <div onClick={() => thumbHandler(1)} className={styles.thumbsUp}>
                   <FontAwesomeIcon icon={faThumbsUp} />
                 </div>

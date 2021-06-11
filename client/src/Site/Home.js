@@ -3,69 +3,66 @@ import { Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Categories from "../utils/Categories";
 import ThreadList from "./../components/View/ThreadList";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Card from "react-bootstrap/Card";
+
 
 export default function Home(props) {
 	//Zastąpić przez pobranie z bazy
-	const categoriesJSON = [
-		{
-			id: "1",
-			name: "Category 1",
-			link: "/category/1",
-		},
-		{
-			id: "2",
-			name: "Category 2",
-			link: "/category/2",
-		},
-	];
+	const [categoriesJSON, setCategoriesJSON] = useState([
+		// {
+		// 	id: "1",
+		// 	name: "Category 1",
+		// 	link: "/category/1",
+		// },
+		// {
+		// 	id: "2",
+		// 	name: "Category 2",
+		// 	link: "/category/2",
+		// },
+	]);
+	const getCategory = async () => {
+		axios({ method: "get", url: "/api/forum/" })
+		.then((result) => {
+			const data = result.data?.map((item) => {
+				return {
+					id: item.id,
+					name: item.name,
+					link: `/category/${item.id}`,
+				};
+			});			
+			setCategoriesJSON(data)
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+	}
+		
+	useEffect(() => {
+		getCategory()
+	}, []); 
+	
 	if (props.history.location.state?.msg)
 		toast.info(props.history.location.state.msg);
 
-	const [threads] = useState([
-		{
-			id: 1,
-			name: "Hello everyone",
-			category_id: 1,
-			reputation: 14,
-			voted: [],
-			created_at: Date.now(),
-			updated_at: Date.now(),
-			closed: true,
-			user_id: 1,
-		},
-		{
-			id: 2,
-			name: "Where do I find this?",
-			category_id: 1,
-			reputation: 23,
-			voted: [],
-			created_at: Date.now(),
-			closed: false,
-			user_id: 1,
-		},
-		{
-			id: 3,
-			name: "Why is it so?",
-			category_id: 1,
-			reputation: 3131,
-			voted: [],
-			created_at: Date.now(),
-			closed: false,
-			user_id: 1,
-		},
-	]);
 
-	Categories.setCategories(categoriesJSON);
-	const categoriesList = categoriesJSON.map((item) => {
+	console.log(categoriesJSON)
+	const categoriesList = categoriesJSON?.map((item) => {
 		return (
-			<Row key={item.id}>
-				<Link to={item.link}>
-					<Col>{item.id}</Col>
-					<Col>{item.name}</Col>
-				</Link>
-			</Row>
+			<div key={item.id} className=" mx-auto w-50">
+				<Card>
+					<Card.Body>
+						<Card.Title>
+							<Link to={item.link} style={{color: "black"}}>
+								<h3>{item.name}</h3>
+							</Link>
+						</Card.Title>	
+					</Card.Body>
+				</Card>
+			</div>
+
 		);
 	});
 	return (
