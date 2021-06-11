@@ -41,6 +41,7 @@ export default function Login(props) {
 					UserInfo.setId(parseInt(result.data.userId));
 					UserInfo.setRank(parseInt(result.data.rank));
 					UserInfo.setLoggedIn(true);
+					toast.success(result.data.msg);
 					props.closePopup();
 				} else {
 					result.data.errors?.map((error) => toast.error(error.msg));
