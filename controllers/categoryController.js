@@ -76,7 +76,7 @@ module.exports = {
 					model: db.Post,
 					include: {
 						model: db.User,
-						attributes: ["nickname"],
+						attributes: ["nickname", "rank_id"],
 					},
 				},
 			],
@@ -117,6 +117,7 @@ module.exports = {
 					thread_id: thread.id,
 					user_id: req.session.userId,
 					content: body.content,
+					attachement: body.attachement
 				})
 					.then((post) => {
 						res.json({

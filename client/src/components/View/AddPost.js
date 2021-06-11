@@ -4,24 +4,38 @@ import styles from "../../styles/components/AddPost.module.css";
 import Card from "react-bootstrap/Card";
 import UserStats from "./UserStats";
 import {useState} from "react";
+import axios from "axios";
 
 
 const AddPost = (props) => {
     const [content, setContent] = useState('')
     const [attachement, setAttachement] = useState('')
 
-    const PostHandler = (e) =>{
-        //e.preventDefault()
-        const post =  {
-            id: 0,
-            thread_id: parseInt(props.id),
-            user_id: props.activeUser,
+    const addPost = async () => {
+		axios({ method: "post", url: "api/forum/"+props.category+"/"+props.thread,data:{
             content: content,
-            attachement: attachement,
-            reputation: 0,
-            created_at: Date.now(),
-            voted: []
-        }  
+            attachement: attachement
+        }  })
+			.then((result) => {       
+                console.log(result.data);
+                
+			})
+			.catch((err) => console.log(err));
+	};
+
+    const PostHandler = (e) =>{
+        e.preventDefault()
+        addPost()
+        // const post =  {
+        //     id: 0,
+        //     thread_id: parseInt(props.id),
+        //     user_id: props.activeUser,
+        //     content: content,
+        //     attachement: attachement,
+        //     reputation: 0,
+        //     created_at: Date.now(),
+        //     voted: []
+        // }  
     }
     return (
     <div className={styles.container}>
