@@ -3,6 +3,20 @@ const { Op } = require("sequelize");
 const { validationResult } = require("express-validator");
 
 module.exports = {
+	//GET http://localhost:3000/api/forum/ranks
+	listRanks: function (req, res) {
+		db.Rank.findAll()
+			.then((data) => {
+				res.json(data);
+			})
+			.catch((err) => {
+				res.json({
+					success: false,
+					errors: err,
+				});
+			});
+	},
+	//GET http://localhost:3000/api/forum/ranks
 	listCategories: function (req, res) {
 		db.Category.findAll()
 			.then((data) => {
@@ -15,6 +29,7 @@ module.exports = {
 				});
 			});
 	},
+	//GET http://localhost:3000/api/forum/search
 	searchThreads: function (req, res) {
 		const search = req.query.search;
 		db.Thread.findAll({
@@ -76,7 +91,7 @@ module.exports = {
 					model: db.Post,
 					include: {
 						model: db.User,
-						attributes: ["nickname", "rank_id"],
+						attributes: ["nickname", "rank_id", "avatar"],
 					},
 				},
 			],
@@ -391,6 +406,7 @@ module.exports = {
 	editPost: async (req, res) => {
 		idPost = req.body.postID;
 		newContent = req.body.content;
+		newAttachement = req.body.attachement
 
 		const user = await db.User.findByPk(req.session.userId);
 		const post = await db.Post.findByPk(idPost);
@@ -413,7 +429,7 @@ module.exports = {
 			return;
 		}
 
-		db.Post.update({ content: newContent }, { where: { id: idPost } })
+		db.Post.update({ content: newContent, attachement: newAttachement }, { where: { id: idPost } })
 			.then(() => {
 				res.json({
 					success: true,

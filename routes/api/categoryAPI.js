@@ -2,6 +2,7 @@ const router = require("express").Router();
 const categoryController = require("../../controllers/categoryController");
 const { check } = require('express-validator');
 
+router.route("/ranks").get(categoryController.listRanks);
 router.route("/").get(categoryController.listCategories);
 router.route("/search").get(categoryController.searchThreads);
 //READ
