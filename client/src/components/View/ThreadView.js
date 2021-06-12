@@ -29,6 +29,7 @@ const ThreadView = (props) => {
           toast.error(result.data.msg);
         } else {
           setThread(result.data);
+          console.log(result.data)
         }
 			})
 			.catch((err) => console.log(err));
