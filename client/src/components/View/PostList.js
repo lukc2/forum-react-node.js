@@ -14,11 +14,12 @@ const PostList = (props) => {
       axios({ method: "get", url: "/api/forum/ranks"})
 			.then((result) => {
         if (result.data.success) {
-          toast.success(result.data.msg);
+          console.log(result.data);
           setRanks(result.data);
         } else {
           console.error(result.data.errors);
           toast.error(result.data.msg);
+          console.log(result.data)
         }
 			})
 			.catch((err) => console.log(err));

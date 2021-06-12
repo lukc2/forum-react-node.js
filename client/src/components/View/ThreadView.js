@@ -17,76 +17,10 @@ import { toast } from "react-toastify";
 const ThreadView = (props) => {
 
   let { id }= useParams();
-  // const [threads] = useState([
-  //   // {
-  //   //   id: 1, 
-  //   //   name: "Hello everyone",
-  //   //   category_id: 1,
-  //   //   reputation: 14,
-  //   //   voted: [],
-  //   //   created_at: Date.now(),
-  //   //   closed: false,
-  //   //   user_id: 1
-  //   // },
-  //   // {
-  //   //   id: 2,
-  //   //   name: "Where do I find this?",
-  //   //   category_id: 1,
-  //   //   reputation: 23,
-  //   //   voted: [],
-  //   //   created_at: Date.now(),
-  //   //   closed: false,
-  //   //   user_id: 1
-  //   // },
-  //   // {
-  //   //   id: 3,
-  //   //   name: "Why is it so?",
-  //   //   category_id: 1,
-  //   //   reputation: 3131,
-  //   //   voted: [],
-  //   //   created_at: Date.now(),
-  //   //   closed: false,
-  //   //   user_id: 1
-  //   // }
-  // ]);
+
   const [thread, setThread] = useState([]);
   
-  // const [posts] = useState([
-  //   // {
-  //   //   id: 1,
-  //   //   thread_id: parseInt(id),
-  //   //   user_id: 1,
-  //   //   content:
-  //   //     "Hello everyoneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-  //   //   attachement: 'https://i.imgur.com/HFzYtr2.jpg',
-  //   //   reputation: 14,
-  //   //   created_at: Date.now(),
-  //   //   updated_at: Date.now()+10,
-  //   //   voted: []
-  //   // },
-  //   // {
-  //   //   id: 2,
-  //   //   user_id: 2,
-  //   //   thread_id: parseInt(id),
-  //   //   content: "No",
-  //   //   attachement: 'https://www.youtube.com/watch?v=YZwSzGYtvWg',
-  //   //   reputation: 14,
-  //   //   created_at: Date.now(),
-  //   //   updated_at: Date.now(),
-  //   //   voted: [1,2]
-  //   // },
-  //   // {
-  //   //   id: 3,
-  //   //   user_id: 2,
-  //   //   thread_id: parseInt(id),
-  //   //   attachement: 'https://soundcloud.com/musicbyvander/wii-theme-song-trap-remix',
-  //   //   content: "Hello everyone",
-  //   //   reputation: 14,
-  //   //   created_at: Date.now(),
-  //   //   updated_at: Date.now(),
-  //   //   voted: [1,2]
-  //   // },
-  // ]);
+  
 	const getThread = async () => {
 		axios({ method: "get", url: "/api/forum/"+props.id+"/"+id})
 			.then((result) => {
@@ -96,6 +30,7 @@ const ThreadView = (props) => {
         } else {
           console.error(result.data.errors);
           toast.error(result.data.msg);
+          console.log(result.data)
         }
 			})
 			.catch((err) => console.log(err));
