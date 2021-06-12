@@ -19,21 +19,27 @@ const Post = (props) => {
   const [post] = useState(props.post)
   const [edit, setEdit] = useState(false)
   let { id } = useParams();
-  const thumbHandler = (val) => {
+  const thumbHandler = async (val) => {
 
-    axios.put("localhost:3000/api/forum/"+props.category+"/"+props.post.thread_id, {
-      postId: props.post.id,
-      vote: val
-    })
-    .then((result) => {       
-      if (result.data.success) {
-        // toast.success(result.data.msg);
-      } else {
-        console.error(result.data.errors);
-        toast.error(result.data.msg);
+    if(UserInfo.getLoggedIn()){
+      axios.put("localhost:3000/api/forum/"+props.category+"/"+props.post.thread_id, {
+        postId: props.post.id,
+        vote: val
+      })
+      .then((result) => {       
+        if (result.data.success) {
+          // toast.success(result.data.msg);
+        } else {
+          console.error(result.data.errors);
+          toast.error(result.data.msg);
+        }
+      })
+      .catch((err) => console.log(err));
       }
-    })
-    .catch((err) => console.log(err));
+      else{
+        toast.info("Musisz być zalogowany by móc głosować!")
+      }
+ 
 
     // setPost({
     //   id: post.id,

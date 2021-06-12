@@ -40,7 +40,7 @@ const ThreadView = (props) => {
 	}, []);
 
 
-  const thumbHandler = (val) => {
+  const thumbHandler = async () => {
       axios({ method: "put", url: "api/forum/"+id,data:{
               threadId: id,
               vote: val
@@ -69,7 +69,7 @@ const ThreadView = (props) => {
         <br></br>
         <Card>
           <Card.Header>
-            <div className="col-12 w-50">
+            <div className="col-12">
               <b>
                 <h2>{thread.name}</h2>
               </b>
