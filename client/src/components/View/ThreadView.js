@@ -40,7 +40,8 @@ const ThreadView = (props) => {
 	}, []);
 
 
-  const thumbHandler = async () => {
+  const thumbHandler = async (val) => {
+      if(UserInfo.getLoggedIn()){
       axios({ method: "put", url: "api/forum/"+id,data:{
               threadId: id,
               vote: val
@@ -50,17 +51,11 @@ const ThreadView = (props) => {
           getThread(); 
         })
         .catch((err) => console.log(err));
- 
-    // setThread((thread) => ({
-    //   id: thread.id,
-    //   name: thread.name,
-    //   category_id: thread.category_id,
-    //   reputation: thread.reputation + val,
-    //   voted: voted,
-    //   created_at: thread.created_at,
-    //   closed: thread.closed,
-    //   user_id: thread.user_id
-    // }));
+      }
+      else{
+        toast.info("Musisz być zalogowany by móc głosować!")
+      }
+  
 
   };
   return (

@@ -22,10 +22,10 @@ const Post = (props) => {
   const thumbHandler = async (val) => {
 
     if(UserInfo.getLoggedIn()){
-      axios.put("localhost:3000/api/forum/"+props.category+"/"+props.post.thread_id, {
+      axios({ method: "put", url: "/api/forum/"+props.category+"/"+props.post.thread_id,data:{
         postId: props.post.id,
         vote: val
-      })
+      }})
       .then((result) => {       
         if (result.data.success) {
           // toast.success(result.data.msg);
