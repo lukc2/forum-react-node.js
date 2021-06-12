@@ -28,8 +28,8 @@ const ThreadView = (props) => {
           console.error(result.data.errors);
           toast.error(result.data.msg);
         } else {
-          setThread(result.data);
-          console.log(result.data)
+          setThread(result.data[0]);
+          //console.log(result.data)
         }
 			})
 			.catch((err) => console.log(err));
