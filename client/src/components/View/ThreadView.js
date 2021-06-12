@@ -169,7 +169,7 @@ const ThreadView = (props) => {
       </div>
       <br></br>
       <div className=" ml-auto mr-auto w-75">
-        <AddPost thread={thrId} category={thread.category_id}/>
+        <AddPost thread={id} category={thread.category_id}/>
         <PostList category={thread.category_id} source={thread.posts} />
       </div>
     </>
