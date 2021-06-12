@@ -5,9 +5,10 @@ import Card from "react-bootstrap/Card";
 import UserStats from "./UserStats";
 import {useState} from "react";
 import axios from "axios";
-
+import { useHistory } from "react-router";
 
 const AddPost = (props) => {
+    const history = useHistory();
     const [content, setContent] = useState('')
     const [attachement, setAttachement] = useState('')
 
@@ -16,7 +17,14 @@ const AddPost = (props) => {
             content: content,
             attachement: attachement
         }  })
-			.then((result) => {       
+			.then((result) => {   
+                if (result.data.success) {
+                    toast.success(result.data.msg); 
+                    history.push("/category/"+props.category+"/"+props.thread);             
+                } else {
+                    console.error(result.data.errors);
+                    toast.error(result.data.errors);
+                  }    
                 console.log(result.data);
                 
 			})

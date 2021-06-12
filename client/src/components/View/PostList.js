@@ -13,13 +13,11 @@ const PostList = (props) => {
       //http://localhost:3000/api/forum/ranks
       axios({ method: "get", url: "/api/forum/ranks"})
 			.then((result) => {
-        if (result.data.success) {
-          console.log(result.data);
-          setRanks(result.data);
-        } else {
+        if (result.data.success===false) {
           console.error(result.data.errors);
           toast.error(result.data.msg);
-          console.log(result.data)
+        } else {
+          setRanks(result.data);
         }
 			})
 			.catch((err) => console.log(err));

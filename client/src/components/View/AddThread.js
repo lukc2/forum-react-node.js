@@ -7,9 +7,10 @@ import 'react-inputs-validation/lib/react-inputs-validation.min.css';
 import { useParams } from "react-router";
 import { Redirect } from 'react-router-dom';
 import { toast } from "react-toastify";
-
+import { useHistory } from "react-router";
 
 const AddThread = (props) => {
+    const history = useHistory();
     const [name, setName] = useState('')
     const [content, setContent] = useState('')
     const [attachement, setAttachement] = useState('')
@@ -23,14 +24,13 @@ const AddThread = (props) => {
             attachement: attachement
         }  )
 			.then((result) => {       
-                console.log(result.data);
+                 console.log(result.data);
                 if (result.data.success) {
                     toast.success(result.data.msg); 
-            //znaleźć sposób na redirect                 
-                       // return (<Redirect to={"/category/"+props.id+"/"+result.data.thread_id} />  )  
                     setName("")
                     setContent("")
                     setAttachement("")
+                    history.push("/category/"+props.id+"/"+result.data.thread_id);             
                     } else {
                     console.error(result.data.errors);
                     result.data.errors.errors.forEach(element => {

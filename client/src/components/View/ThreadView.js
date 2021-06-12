@@ -24,13 +24,11 @@ const ThreadView = (props) => {
 	const getThread = async () => {
 		axios({ method: "get", url: "/api/forum/"+props.id+"/"+id})
 			.then((result) => {
-        if (result.data.success) {
-          //toast.success(result.data.msg);
-          setThread(result.data);
-        } else {
+        if (result.data.success===false) {
           console.error(result.data.errors);
           toast.error(result.data.msg);
-          console.log(result.data)
+        } else {
+          setThread(result.data);
         }
 			})
 			.catch((err) => console.log(err));
