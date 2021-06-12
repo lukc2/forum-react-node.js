@@ -7,6 +7,7 @@ import AddThread from "../components/View/AddThread";
 import axios from "axios";
 
 export default function Category({ match }) {
+
   let { id } = useParams();
   const [category, setCategory] = useState([
     // {
@@ -63,23 +64,23 @@ export default function Category({ match }) {
 
 		
 	const getThreads = async () => {
-		axios({ method: "get", url: "api/forum/"+id })
+		axios({ method: "get", url: "/api/forum/"+id })
 			.then((result) => {
-				const data = {
-						id: result.data.id,
-						name: result.data.name,
-						link: `/category/${result.data.id}`,
+				const cat = {
+						id: result.data[0].id,
+						name: result.data[0].name,
+						link: `/category/${result.data[0].id}`,
 					};
 
-        		console.log(result.data);
-				setCategory(data);
-				setThreads(result.data.thread);
+        		console.log(result.data[0]);
+				setCategory(cat);
+				setThreads(result.data[0].threads);
 			})
 			.catch((err) => console.log(err));
 	};
+
 	useEffect(() => {
-		getThreads();
-		
+		getThreads();		
 	}, []);
   return (
     <>
@@ -92,7 +93,7 @@ export default function Category({ match }) {
           </div>      
         )}
       />
-      <Route path="/category/:id/thread/:id" component={() => <ThreadView id={id} />} />
+      <Route path="/category/:id/thread/:thrId" component={() => <ThreadView id={id} />} />
       <Route path="/category/:id/addThread" component={() => <AddThread id={id}/>} />
     </>
   );

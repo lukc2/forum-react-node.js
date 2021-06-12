@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 
 const ThreadView = (props) => {
 
-  let { id } = useParams();
+  let { thrId } = useParams();
   // const [threads] = useState([
   //   // {
   //   //   id: 1, 
@@ -88,7 +88,7 @@ const ThreadView = (props) => {
   //   // },
   // ]);
 	const getThread = async () => {
-		axios({ method: "get", url: "api/forum/"+props.id+"/"+id })
+		axios.get("localhost:3000/api/forum/"+props.id+"/"+thrId)
 			.then((result) => {
         if (result.data.success) {
           toast.success(result.data.msg);
@@ -108,7 +108,7 @@ const ThreadView = (props) => {
 
   const thumbHandler = (val) => {
       axios({ method: "put", url: "api/forum/"+props.id,data:{
-              threadId: id,
+              threadId: thrId,
               vote: val
           }  })
         .then((result) => {       
@@ -142,7 +142,7 @@ const ThreadView = (props) => {
             </div>
             <div className="col-12 border-top">
               <div className="col-5 float-left">
-                <div style={thread.votes.includes(UserInfo.getId())?{pointerEvents: "none", opacity: "0.4"}:{opacity: "1"}}>
+                <div style={thread.votes?.includes(UserInfo.getId())?{pointerEvents: "none", opacity: "0.4"}:{opacity: "1"}}>
                   <div
                     onClick={() => thumbHandler(1)}
                     className={styles.thumbsUp}
@@ -160,7 +160,7 @@ const ThreadView = (props) => {
               </div>
               <span className={styles.statsThread}>
                 <span className="col-3 float-right">
-                  Posts <FontAwesomeIcon icon={faComments} /> : {thread.posts.length}
+                  Posts <FontAwesomeIcon icon={faComments} /> : {thread.posts?.length}
                 </span>
               </span>
             </div>
@@ -169,7 +169,7 @@ const ThreadView = (props) => {
       </div>
       <br></br>
       <div className=" ml-auto mr-auto w-75">
-        <AddPost thread={id} category={thread.category_id}/>
+        <AddPost thread={thrId} category={thread.category_id}/>
         <PostList category={thread.category_id} source={thread.posts} />
       </div>
     </>

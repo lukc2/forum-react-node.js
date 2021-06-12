@@ -4,6 +4,8 @@ import styles from "../../styles/components/AddPost.module.css";
 import Card from "react-bootstrap/Card";
 //import UserStats from "./UserStats";
 import {useState} from "react";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 
 const EditPost = (props) => {
@@ -12,18 +14,22 @@ const EditPost = (props) => {
 
     const PostHandler = (e) =>{
         e.preventDefault()
-        // const post =  {
-        //     id: props.post.id,
-        //     thread_id: parseInt(props.id),
-        //     user_id: props.activeUser,
-        //     content: content,
-        //     attachement: attachement,
-        //     reputation: props.post.reputation,
-        //     created_at: props.post.created_at,
-        //     updated_at: Date.now(),
-        //     voted: props.post.voted
-        // }  
-    }
+
+        axios.patch("localhost:3000/api/forum/"+props.id+"/"+props.post.id, {
+            content: content,
+            attachement: attachement
+        })
+			.then((result) => {
+        if (result.data.success) {
+          toast.success(result.data.msg);
+        } else {
+          console.error(result.data.errors);
+          toast.error(result.data.msg);
+        }
+			})
+			.catch((err) => console.log(err));
+	};
+    
     return (
     <div className={styles.container}>
 

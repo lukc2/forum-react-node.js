@@ -6,6 +6,8 @@ import {useState} from "react";
 import 'react-inputs-validation/lib/react-inputs-validation.min.css';
 import { useParams } from "react-router";
 import { Redirect } from 'react-router-dom';
+import { toast } from "react-toastify";
+
 
 const AddThread = (props) => {
     const [name, setName] = useState('')
@@ -15,22 +17,28 @@ const AddThread = (props) => {
     let { id } = useParams();
 
     const addThread = async () => {
-		axios({ method: "post", url: "api/forum/"+props.id+"/addThread",data:{
-            name: name,
-            category_id: parseInt(id),
-            reputation: 0,
-            voted: [],
-            created_at: Date.now(),
-            updated_at: Date.now(),
-            closed: false,
+		axios.post("/api/forum/"+props.id+"/addThread", {
+            title: name,
             content: content,
             attachement: attachement
-        }  })
+        }  )
 			.then((result) => {       
                 console.log(result.data);
-                if(result.success===true) {
-                    return <Redirect to={"/category/"+props.id} />    
-                }
+                if (result.data.success) {
+                    toast.success(result.data.msg); 
+            //znaleźć sposób na redirect                 
+                       // return (<Redirect to={"/category/"+props.id+"/"+result.data.thread_id} />  )  
+                    setName("")
+                    setContent("")
+                    setAttachement("")
+                    } else {
+                    console.error(result.data.errors);
+                    result.data.errors.errors.forEach(element => {
+                        toast.error(element.msg);
+                    }); 
+                    
+                  }
+               
 			})
 			.catch((err) => console.log(err));
 	};

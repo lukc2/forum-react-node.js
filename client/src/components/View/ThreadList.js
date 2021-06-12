@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const ThreadList = (props) => {
   const threadList = props.source?.map((thread) => {
-    return <Thread key={thread.id} thread={thread} />;
+    return <Thread key={thread.id} thread={thread} category={props.category} />;
   });
 
   return (

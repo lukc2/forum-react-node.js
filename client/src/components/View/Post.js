@@ -13,16 +13,18 @@ import EditPost from "./EditPost";
 import UserInfo from "../../utils/UserInfo";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useParams } from "react-router";
 
 const Post = (props) => {
   const [post] = useState(props.post)
   const [edit, setEdit] = useState(false)
+  let { id } = useParams();
   const thumbHandler = (val) => {
 
-    axios({ method: "put", url: "api/forum/"+props.category+"/"+props.post.thread_id,data:{
+    axios.put("localhost:3000/api/forum/"+props.category+"/"+props.post.thread_id, {
       postId: props.post.id,
       vote: val
-    }  })
+    })
     .then((result) => {       
       if (result.data.success) {
         // toast.success(result.data.msg);
@@ -74,17 +76,17 @@ const Post = (props) => {
   return (
     <div className={styles.container}>
       <span className={styles.userInfo}>
-        <UserStats user = {props.user}></UserStats>
+        <UserStats rank={props.ranks.find(item => item.id === post.user.rank_id)} user = {post.user}></UserStats>
       </span>
 
       <Card>
         <Card.Body>         
             {post.user_id===UserInfo.getId() ? <button className={styles.editButton} onClick={handleEdit}>Edit</button> :<></>}
-            {edit ? <EditPost post={post}/> :  items()}               
+            {edit ? <EditPost id={id} post={post}/> :  items()}               
 
           <div className="border-top">
             <div className="col-5 float-left">       
-              <div style={post.voted.includes(UserInfo.getId())?{pointerEvents: "none", opacity: "0.4"}:{opacity: "1"}}>
+              <div style={post.voted?.includes(UserInfo.getId())?{pointerEvents: "none", opacity: "0.4"}:{opacity: "1"}}>
                 <div onClick={() => thumbHandler(1)} className={styles.thumbsUp}>
                   <FontAwesomeIcon icon={faThumbsUp} />
                 </div>

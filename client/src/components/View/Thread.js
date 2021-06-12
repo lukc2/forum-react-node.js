@@ -15,7 +15,7 @@ const Thread = (props) => {
             <Link
               to={
                 "/category/" +
-                props.thread.category_id +
+                props.category.id +
                 "/thread/" +
                 props.thread.id
               }

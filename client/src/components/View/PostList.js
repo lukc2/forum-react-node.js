@@ -1,33 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../../styles/components/ThreadView.module.css";
 import Post from "./Post"
-import {useState} from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const PostList = (props) => {
 
-    const [ranks] = useState([
-        {
-          id: 1,
-          name: "Admin",
-          created_at: Date.now()
-        },
-        {
-          id: 2,
-          name: "Mod",
-          created_at: Date.now()
-        },
-        {
-          id: 3,
-          name: "Basic",
-          created_at: Date.now()
-        },
-      ]);
-    
+
+    const [rank, getRank] =useState([
+
+    ])
+
+    const getRanks = async () => {
+		axios.get("localhost:3000/api/forum/ranks")
+			.then((result) => {
+        if (result.data.success) {
+          toast.success(result.data.msg);
+          getRanks(result.data);
+        } else {
+          console.error(result.data.errors);
+          toast.error(result.data.msg);
+        }
+			})
+			.catch((err) => console.log(err));
+	};
+	useEffect(() => {
+		getRanks();
+		
+	}, []);
+   
    
 
     const postList = props.source?.map(post => {
 		return (
-            <Post category={props.category} key={post.id} post={post}/> 
+            <Post category={props.category} ranks={rank} key={post.id} post={post}/> 
 		)
 	  })
     
