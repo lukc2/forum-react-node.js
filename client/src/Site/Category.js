@@ -72,7 +72,7 @@ export default function Category({ match }) {
 						link: `/category/${result.data[0].id}`,
 					};
 
-        		console.log(result.data[0]);
+        		//console.log(result.data[0]);
 				setCategory(cat);
 				setThreads(result.data[0].threads);
 			})
@@ -93,7 +93,7 @@ export default function Category({ match }) {
           </div>      
         )}
       />
-      <Route path="/category/:id/thread/:thrId" component={() => <ThreadView id={id} />} />
+      <Route path="/category/:id/thread/:id" component={() => <ThreadView id={id} />} />
       <Route path="/category/:id/addThread" component={() => <AddThread id={id}/>} />
     </>
   );
