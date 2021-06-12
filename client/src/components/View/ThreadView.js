@@ -88,7 +88,7 @@ const ThreadView = (props) => {
   //   // },
   // ]);
 	const getThread = async () => {
-		axios.get("localhost:3000/api/forum/"+props.id+"/"+thrId)
+		axios({ method: "get", url: "/api/forum/"+props.id+"/"+thrId})
 			.then((result) => {
         if (result.data.success) {
           toast.success(result.data.msg);

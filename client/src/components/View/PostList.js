@@ -12,7 +12,7 @@ const PostList = (props) => {
     ])
 
     const getRanks = async () => {
-		axios.get("localhost:3000/api/forum/ranks")
+      axios({ method: "get", url: "/api/forum/ranks"})
 			.then((result) => {
         if (result.data.success) {
           toast.success(result.data.msg);
