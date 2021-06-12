@@ -6,6 +6,7 @@ import UserStats from "./UserStats";
 import {useState} from "react";
 import axios from "axios";
 import { useHistory } from "react-router";
+import { toast } from "react-toastify";
 
 const AddPost = (props) => {
     const history = useHistory();
