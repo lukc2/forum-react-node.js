@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 const ThreadView = (props) => {
 
   let { thrId } = useParams();
+  let { id }= useParams();
   // const [threads] = useState([
   //   // {
   //   //   id: 1, 
@@ -88,10 +89,10 @@ const ThreadView = (props) => {
   //   // },
   // ]);
 	const getThread = async () => {
-		axios({ method: "get", url: "/api/forum/"+props.id+"/"+thrId})
+		axios({ method: "get", url: "/api/forum/"+id+"/"+thrId})
 			.then((result) => {
         if (result.data.success) {
-          toast.success(result.data.msg);
+          //toast.success(result.data.msg);
           setThread(result.data);
         } else {
           console.error(result.data.errors);
@@ -107,7 +108,7 @@ const ThreadView = (props) => {
 
 
   const thumbHandler = (val) => {
-      axios({ method: "put", url: "api/forum/"+props.id,data:{
+      axios({ method: "put", url: "api/forum/"+id,data:{
               threadId: thrId,
               vote: val
           }  })
