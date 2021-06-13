@@ -4,7 +4,7 @@ const UserStats = (props) => {
   //console.log(props.user)
   return <div className={styles.container}>
     <div className={styles.avatarContainer}>
-      <img className={styles.avatar} alt='' src={'data:image/png;base64,'+ props.user.avatar}></img>
+      <img className={styles.avatar} alt='' src={props.user.avatar}></img>
     </div>
     <div className={styles.infoCenter}>{props.user.nickname}</div>
     <div className={styles.infoSide}>Rank:</div> 

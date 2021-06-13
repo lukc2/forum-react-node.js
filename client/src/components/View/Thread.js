@@ -4,7 +4,7 @@ import styles from "../../styles/components/Thread.module.css";
 import Card from "react-bootstrap/Card";
 import { faThumbsUp, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Moment from "moment";
+import dateFormat from "dateformat";
 
 const Thread = (props) => {
   return (
@@ -37,7 +37,7 @@ const Thread = (props) => {
 
               <span className="col-3 float-right">
                  <FontAwesomeIcon icon={faCalendar} /> :{" "}
-                {Moment(props.thread.created_at).format("DD.MM.yyy hh:mm")}     
+                 {dateFormat(props.thread.created_at,"dd.mm.yyyy hh:mm")}   
               </span>
             </span>
           </div>

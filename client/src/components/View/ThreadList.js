@@ -1,6 +1,7 @@
 import Thread from "./Thread";
 import styles from "../../styles/components/ThreadList.module.css";
 import { Link } from "react-router-dom";
+import UserInfo from "../../utils/UserInfo";
 
 const ThreadList = (props) => {
   const threadList = props.source?.map((thread) => {
@@ -13,7 +14,9 @@ const ThreadList = (props) => {
       <h3 className={styles.nameHeader}>{props.category.name}</h3>
       {props.category.id !== undefined ? 
       <div className={styles.addThread}>
-        <Link to={"/category/" + props.category.id + "/addThread/"+props.category.id}>Add Thread</Link>
+        {UserInfo.getLoggedIn()?
+          <Link to={"/category/" + props.category.id + "/addThread/"+props.category.id}>Add Thread</Link>
+          : ''}
       </div> : ''
       }
       
