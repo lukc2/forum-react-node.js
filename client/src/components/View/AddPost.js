@@ -21,7 +21,7 @@ const AddPost = (props) => {
 			.then((result) => {   
                 if (result.data.success) {
                     toast.success(result.data.msg); 
-                    history.push("/category/"+props.category+"/"+props.thread);             
+                    history.push("/category/"+props.category+"/thread/"+props.thread);             
                 } else {
                     console.error(result.data.errors);
                     toast.error(result.data.errors);

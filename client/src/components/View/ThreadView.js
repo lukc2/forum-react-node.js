@@ -19,8 +19,9 @@ const ThreadView = (props) => {
   let { id }= useParams();
 
   const [thread, setThread] = useState([]);
-  
-  
+  const [rep, setRep] = useState(thread.reputation);
+  const [voted, setVoted] = useState([thread.voted]);
+
 	const getThread = async () => {
 		axios({ method: "get", url: "/api/forum/"+props.id+"/"+id})
 			.then((result) => {
@@ -42,13 +43,19 @@ const ThreadView = (props) => {
 
   const thumbHandler = async (val) => {
       if(UserInfo.getLoggedIn()){
-      axios.put("api/forum/"+id,{
+      axios.put("/api/forum/"+id,{
               threadId: id,
               vote: val
           }  )
-        .then((result) => {       
-          console.log(result.data);
-          getThread(); 
+        .then((result) => {   
+          if (result.data.success===false) {
+            console.error(result.data.errors);
+            toast.error(result.data.msg);
+          } else {
+            toast.success(result.data.msg);
+            setRep(vote+rep)
+            setVoted([...voted, UserInfo.getId()])
+          }    
         })
         .catch((err) => console.log(err));
       }
@@ -71,7 +78,7 @@ const ThreadView = (props) => {
             </div>
             <div className="col-12 border-top">
               <div className="col-5 float-left">
-                <div style={thread.votes?.includes(UserInfo.getId())?{pointerEvents: "none", opacity: "0.4"}:{opacity: "1"}}>
+                <div style={voted?.includes(UserInfo.getId())?{pointerEvents: "none", opacity: "0.4"}:{opacity: "1"}}>
                   <div
                     onClick={() => thumbHandler(1)}
                     className={styles.thumbsUp}
@@ -85,7 +92,7 @@ const ThreadView = (props) => {
                     <FontAwesomeIcon icon={faThumbsDown} />
                   </div>
                 </div> 
-                <div className={styles.reps}>{thread.reputation}</div>
+                <div className={styles.reps}>{rep}</div>
               </div>
               <span className={styles.statsThread}>
                 <span className="col-3 float-right">
@@ -98,7 +105,9 @@ const ThreadView = (props) => {
       </div>
       <br></br>
       <div className=" ml-auto mr-auto w-75">
-        <AddPost thread={id} category={thread.category_id}/>
+        {UserInfo.getLoggedIn()?
+          <AddPost thread={id} category={thread.category_id}/>
+          :''}
         <PostList category={thread.category_id} source={thread.posts} />
       </div>
     </>

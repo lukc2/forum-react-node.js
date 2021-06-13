@@ -17,6 +17,8 @@ import { useParams } from "react-router";
 
 const Post = (props) => {
   const [post] = useState(props.post)
+  const [rep, setRep] = useState(thread.reputation);
+  const [voted, setVoted] = useState([thread.voted]);
   const [edit, setEdit] = useState(false)
   let { id } = useParams();
   const thumbHandler = async (val) => {
@@ -27,11 +29,13 @@ const Post = (props) => {
         vote: val
       })
       .then((result) => {       
-        if (result.data.success) {
-          // toast.success(result.data.msg);
-        } else {
+        if (result.data.success===false) {
           console.error(result.data.errors);
           toast.error(result.data.msg);
+        } else {
+          toast.success(result.data.msg);
+          setRep(vote+rep)
+            setVoted([...voted, UserInfo.getId()])
         }
       })
       .catch((err) => console.log(err));
@@ -92,7 +96,7 @@ const Post = (props) => {
 
           <div className="border-top">
             <div className="col-5 float-left">       
-              <div style={post.voted?.includes(UserInfo.getId())?{pointerEvents: "none", opacity: "0.4"}:{opacity: "1"}}>
+              <div style={voted?.includes(UserInfo.getId())?{pointerEvents: "none", opacity: "0.4"}:{opacity: "1"}}>
                 <div onClick={() => thumbHandler(1)} className={styles.thumbsUp}>
                   <FontAwesomeIcon icon={faThumbsUp} />
                 </div>
@@ -103,7 +107,7 @@ const Post = (props) => {
                   <FontAwesomeIcon icon={faThumbsDown} />
                 </div>
               </div>
-              <div className={styles.reps}>{post.reputation}</div>
+              <div className={styles.reps}>{rep}</div>
             </div>
             <span className={styles.statsThread}>
               <span className="float-right"> 
