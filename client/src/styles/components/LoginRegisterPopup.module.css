@@ -11,7 +11,7 @@
 }
 .popup_inner_login {
 	position: absolute;
-	top: 25%;
+	top: 15%;
 	left: 25%;
 	right: 25%;
 	max-width: 75ch;
@@ -33,9 +33,9 @@
 }
 .popup_inner_register {
 	position: absolute;
+	top: 15%;
 	left: 25%;
 	right: 25%;
-	top: 25%;
 	max-width: 75ch;
 	margin: auto;
 	border-radius: 20px;
@@ -53,6 +53,7 @@
 	float: right;
 	margin-top: 0.4rem;
 	margin-right: 0.7rem;
+	cursor: pointer;
 }
 .close_x:hover {
 	cursor: pointer;

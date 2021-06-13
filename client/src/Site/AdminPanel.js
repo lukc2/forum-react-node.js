@@ -1,16 +1,18 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, Card, Col, Form, Row, Table } from "react-bootstrap";
 import styles from "../styles/Profile.module.css";
+import UserInfo from "../utils/UserInfo";
 import uniqid from "uniqid";
 import axios from "axios";
 import { toast } from "react-toastify";
 export default function AdminPanel() {
 	const [newForum, setNewForum] = useState("");
-	const [userData, setUserData] = useState([]);
+	const [usersData, setUsersData] = useState([]);
 	const [categories, setCategories] = useState([]);
 	const categoriesList = useRef();
 	const tableBodyUsers = useRef();
 	const [gfyjifgy, setGfyjifgy] = useState(false);
+
 	const refresh = () => {
 		setGfyjifgy(!gfyjifgy);
 	};
@@ -23,7 +25,7 @@ export default function AdminPanel() {
 
 		axios({ method: "get", url: "/api/adminpanel " })
 			.then((response) => {
-				setUserData(response.data);
+				setUsersData(response.data);
 			})
 			.catch((err) => console.error(err));
 	}, [gfyjifgy]);
@@ -65,11 +67,10 @@ export default function AdminPanel() {
 			.catch((err) => console.error(err));
 	};
 	const takeModHandler = (id) => {
-		alert("No backend implentation found");
-		return;
+		// TODO
 		axios({
-			method: "get",
-			url: "/api/adminpanel",
+			method: "put",
+			url: "api/adminpanel/takemod",
 			data: { updatedId: id },
 		})
 			.then((response) => {
@@ -104,17 +105,28 @@ export default function AdminPanel() {
 	categoriesList.current = categories.map((c) => (
 		<li key={uniqid()}>{c.name}</li>
 	));
-	tableBodyUsers.current = userData.map((user) => (
+	const userId = parseInt(UserInfo.getId());
+	tableBodyUsers.current = usersData.map((user) => (
 		<tr key={uniqid()}>
 			<td>{user.id}</td>
 			<td>
-				{user.nickname} {user.deleted ? " BANNED" : null}
+				{userId === user.id ? (
+					<span className="badge badge-success">You</span>
+				) : null}{" "}
+				{user.rank_id !== 3 ? (
+					<span className="badge badge-primary">Mod</span>
+				) : null}{" "}
+				{user.deleted ? (
+					<span className="badge badge-danger">BANNED</span>
+				) : null}{" "}
 			</td>
+			<td>{user.nickname}</td>
 			<td>
 				{user.rank_id === 3 ? (
 					<Button
 						variant="success"
 						onClick={() => makeModHandler(user.id)}
+						disabled={userId === user.id}
 					>
 						Make Mod
 					</Button>
@@ -122,6 +134,7 @@ export default function AdminPanel() {
 					<Button
 						variant="warning"
 						onClick={() => takeModHandler(user.id)}
+						disabled={userId === user.id}
 					>
 						Take away Mod
 					</Button>
@@ -130,6 +143,7 @@ export default function AdminPanel() {
 					variant="danger"
 					className="ml-2"
 					onClick={() => banHandler(user.id)}
+					disabled={userId === user.id}
 				>
 					Ban
 				</Button>
@@ -167,6 +181,7 @@ export default function AdminPanel() {
 							<thead>
 								<tr>
 									<th>Id</th>
+									<th>Badges</th>
 									<th>Name</th>
 									<th>Options</th>
 								</tr>
