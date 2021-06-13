@@ -53,7 +53,7 @@ const ThreadView = (props) => {
             toast.error(result.data.msg);
           } else {
             toast.success(result.data.msg);
-            setRep(vote+rep)
+            setRep(rep+val)
             setVoted([...voted, UserInfo.getId()])
           }    
         })

@@ -17,8 +17,8 @@ import { useParams } from "react-router";
 
 const Post = (props) => {
   const [post] = useState(props.post)
-  const [rep, setRep] = useState(thread.reputation);
-  const [voted, setVoted] = useState([thread.voted]);
+  const [rep, setRep] = useState(post.reputation);
+  const [voted, setVoted] = useState([post.voted]);
   const [edit, setEdit] = useState(false)
   let { id } = useParams();
   const thumbHandler = async (val) => {
@@ -34,7 +34,7 @@ const Post = (props) => {
           toast.error(result.data.msg);
         } else {
           toast.success(result.data.msg);
-          setRep(vote+rep)
+          setRep(rep+val)
             setVoted([...voted, UserInfo.getId()])
         }
       })
