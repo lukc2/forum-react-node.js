@@ -44,7 +44,7 @@ const EditPost = (props) => {
                     Media link:  <br/>
                     <input type="text" value={attachement} className={styles.attachment} onChange={(e)=>setAttachement(e.target.value)}/>
                     {" "}(youtube, soundcloud, image source, etc.)
-                    <div className={styles.postButton} onClick={PostHandler}><button >Confirm</button></div>
+                    <div className={styles.postButton} ><button onClick={PostHandler}>Confirm</button></div>
                     
                 </form>           
         </Card.Body>
