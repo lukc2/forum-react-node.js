@@ -4,7 +4,7 @@ import styles from "../../styles/components/Post.module.css";
 import Card from "react-bootstrap/Card";
 import { faThumbsUp, faThumbsDown, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Moment from "moment";
+import dateFormat from "dateformat";
 import UserStats from "./UserStats";
 import {useState} from "react";
 import Embed  from 'react-embed';
@@ -22,10 +22,10 @@ const Post = (props) => {
   const thumbHandler = async (val) => {
 
     if(UserInfo.getLoggedIn()){
-      axios({ method: "put", url: "/api/forum/"+props.category+"/"+props.post.thread_id,data:{
+      axios.put("/api/forum/"+props.category+"/"+props.post.thread_id,{
         postId: props.post.id,
         vote: val
-      }})
+      })
       .then((result) => {       
         if (result.data.success) {
           // toast.success(result.data.msg);
@@ -53,7 +53,7 @@ const Post = (props) => {
     //   updated_at: post.updated_at
     // })
   }
-  var postDate = Moment(props.post.timestamp).format("DD.MM.yyy hh:mm");
+
   var embed;
   if (isImageUrl(post.attachement)) { 
     embed = <a href={post.attachement}><img  alt='' src={post.attachement} /> </a>
@@ -108,7 +108,7 @@ const Post = (props) => {
             <span className={styles.statsThread}>
               <span className="float-right"> 
               <FontAwesomeIcon icon={faCalendar} /> :{" "}
-                {Moment(postDate).format("DD.MM.yyy hh:mm")}    
+              {dateFormat(props.post.timestamp,"DD.MM.yyy hh:mm")}
               </span>
              
             </span>

@@ -42,10 +42,10 @@ const ThreadView = (props) => {
 
   const thumbHandler = async (val) => {
       if(UserInfo.getLoggedIn()){
-      axios({ method: "put", url: "api/forum/"+id,data:{
+      axios.put("api/forum/"+id,{
               threadId: id,
               vote: val
-          }  })
+          }  )
         .then((result) => {       
           console.log(result.data);
           getThread(); 

@@ -14,10 +14,10 @@ const AddPost = (props) => {
     const [attachement, setAttachement] = useState('')
 
     const addPost = async () => {
-		axios({ method: "post", url: "api/forum/"+props.category+"/"+props.thread,data:{
+		axios.post("api/forum/"+props.category+"/"+props.thread,{
             content: content,
             attachement: attachement
-        }  })
+        } )
 			.then((result) => {   
                 if (result.data.success) {
                     toast.success(result.data.msg); 
