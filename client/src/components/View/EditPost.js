@@ -15,13 +15,15 @@ const EditPost = (props) => {
     const PostHandler = (e) =>{
         e.preventDefault()
 
-        axios.patch("localhost:3000/api/forum/"+props.id+"/"+props.post.id, {
+        axios.patch("/api/forum/"+props.category+"/"+props.post.thread_id, {
+            postId: props.post.id,
             content: content,
             attachement: attachement
         })
 			.then((result) => {
         if (result.data.success) {
           toast.success(result.data.msg);
+          history.push("/category/"+props.category+"/"+props.post.thread_id);
         } else {
           console.error(result.data.errors);
           toast.error(result.data.msg);

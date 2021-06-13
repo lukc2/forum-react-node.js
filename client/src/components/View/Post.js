@@ -88,7 +88,7 @@ const Post = (props) => {
       <Card>
         <Card.Body>         
             {post.user_id===UserInfo.getId() ? <button className={styles.editButton} onClick={handleEdit}>Edit</button> :<></>}
-            {edit ? <EditPost id={id} post={post}/> :  items()}               
+            {edit ? <EditPost category={props.category} post={post}/> :  items()}               
 
           <div className="border-top">
             <div className="col-5 float-left">       
@@ -108,7 +108,7 @@ const Post = (props) => {
             <span className={styles.statsThread}>
               <span className="float-right"> 
               <FontAwesomeIcon icon={faCalendar} /> :{" "}
-              {dateFormat(props.post.timestamp,"DD.MM.yyy hh:mm")}
+              {dateFormat(props.post.timestamp,"dd.mm.yyyy hh:mm")}
               </span>
              
             </span>

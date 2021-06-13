@@ -37,7 +37,7 @@ const Thread = (props) => {
 
               <span className="col-3 float-right">
                  <FontAwesomeIcon icon={faCalendar} /> :{" "}
-                 {dateFormat(props.thread.created_at,"DD.MM.yyy hh:mm")}   
+                 {dateFormat(props.thread.created_at,"dd.mm.yyyy hh:mm")}   
               </span>
             </span>
           </div>

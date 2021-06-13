@@ -14,7 +14,7 @@ const AddPost = (props) => {
     const [attachement, setAttachement] = useState('')
 
     const addPost = async () => {
-		axios.post("api/forum/"+props.category+"/"+props.thread,{
+		axios.post("/api/forum/"+props.category+"/"+props.thread,{
             content: content,
             attachement: attachement
         } )
