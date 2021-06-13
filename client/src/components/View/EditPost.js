@@ -6,9 +6,10 @@ import Card from "react-bootstrap/Card";
 import {useState} from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-
+import { useHistory } from "react-router";
 
 const EditPost = (props) => {
+    const history = useHistory();
     const [content, setContent] = useState(props.post.content)
     const [attachement, setAttachement] = useState(props.post.attachement)
 
