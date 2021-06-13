@@ -91,7 +91,7 @@ const Post = (props) => {
 
       <Card>
         <Card.Body>         
-            {post.user_id===UserInfo.getId() ? <button className={styles.editButton} onClick={handleEdit}>Edit</button> :<></>}
+            {post.user_id===parseInt(UserInfo.getId()) ? <button className={styles.editButton} onClick={handleEdit}>Edit</button> :<></>}
             {edit ? <EditPost category={props.category} post={post}/> :  items()}               
 
           <div className="border-top">

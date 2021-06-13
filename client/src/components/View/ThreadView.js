@@ -19,8 +19,8 @@ const ThreadView = (props) => {
   let { id }= useParams();
 
   const [thread, setThread] = useState([]);
-  const [rep, setRep] = useState(thread.reputation);
-  const [voted, setVoted] = useState([thread.voted]);
+  const [rep, setRep] = useState(0);
+  const [voted, setVoted] = useState([]);
 
 	const getThread = async () => {
 		axios({ method: "get", url: "/api/forum/"+props.id+"/"+id})
@@ -30,7 +30,9 @@ const ThreadView = (props) => {
           toast.error(result.data.msg);
         } else {
           setThread(result.data[0]);
-          //console.log(result.data)
+          setRep(result.data[0].reputation)
+          setVoted(result.data[0].voted)
+          console.log(result.data)
         }
 			})
 			.catch((err) => console.log(err));
