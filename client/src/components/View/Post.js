@@ -18,7 +18,7 @@ import { useParams } from "react-router";
 const Post = (props) => {
   const [post] = useState(props.post)
   const [rep, setRep] = useState(post.reputation);
-  const [voted, setVoted] = useState([post.voted]);
+  const [voted, setVoted] = useState(post.voted.split(','));
   const [edit, setEdit] = useState(false)
   let { id } = useParams();
   const thumbHandler = async (val) => {
