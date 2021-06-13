@@ -17,14 +17,14 @@ const EditPost = (props) => {
         e.preventDefault()
 
         axios.patch("/api/forum/"+props.category+"/"+props.post.thread_id, {
-            postId: props.post.id,
+            postID: props.post.id,
             content: content,
             attachement: attachement
         })
 			.then((result) => {
         if (result.data.success) {
           toast.success(result.data.msg);
-          history.push("/category/"+props.category+"/"+props.post.thread_id);
+          history.push("/category/"+props.category+"/thread/"+props.post.thread_id);
         } else {
           console.error(result.data.errors);
           toast.error(result.data.msg);
