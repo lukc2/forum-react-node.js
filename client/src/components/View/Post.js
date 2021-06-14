@@ -76,7 +76,7 @@ const Post = (props) => {
   return (
     <div className={styles.container}>
       <span className={styles.userInfo}>
-        <UserStats rank={props.ranks.find(item => item.id === post.user.rank_id)} user = {post.user}></UserStats>
+        <UserStats ranks={props.ranks} user = {post.user}></UserStats>
       </span>
 
       <Card>
