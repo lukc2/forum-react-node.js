@@ -4,7 +4,6 @@ import styles from "../../styles/components/AddThread.module.css";
 import Card from "react-bootstrap/Card";
 import {useState} from "react";
 import 'react-inputs-validation/lib/react-inputs-validation.min.css';
-import { useParams } from "react-router";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router";
 
@@ -14,7 +13,7 @@ const AddThread = (props) => {
     const [content, setContent] = useState('')
     const [attachement, setAttachement] = useState('')
     //const activeUser = 0;
-    let { id } = useParams();
+ 
 
     const addThread = async () => {
 		axios.post("/api/forum/"+props.id+"/addThread", {

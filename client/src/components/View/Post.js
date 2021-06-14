@@ -1,26 +1,22 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
 import styles from "../../styles/components/Post.module.css";
 import Card from "react-bootstrap/Card";
 import { faThumbsUp, faThumbsDown, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dateFormat from "dateformat";
 import UserStats from "./UserStats";
-import {useState} from "react";
 import Embed  from 'react-embed';
 import isImageUrl from 'is-image-url';
 import EditPost from "./EditPost";
 import UserInfo from "../../utils/UserInfo";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useParams, useEffect } from "react-router";
 
 const Post = (props) => {
   const [post] = useState(props.post)
   const [rep, setRep] = useState(post.reputation);
   const [voted, setVoted] = useState([]);
   const [edit, setEdit] = useState(false)
-  //let { id } = useParams();
   const thumbHandler = async (val) => {
 
     if(UserInfo.getLoggedIn()){
@@ -43,19 +39,6 @@ const Post = (props) => {
       else{
         toast.info("Musisz być zalogowany by móc głosować!")
       }
- 
-
-    // setPost({
-    //   id: post.id,
-    //   thread_id: post.thread_id,
-    //   user_id: post.user_id,
-    //   content: post.content,
-    //   attachement: post.attachement,
-    //   reputation: post.reputation+val,
-    //   created_at: post.created_at,
-    //   voted: voted,
-    //   updated_at: post.updated_at
-    // })
   }
 
   useEffect(() => {
@@ -63,6 +46,7 @@ const Post = (props) => {
     setVoted(post.voted.split(','))
     else 
       setVoted([])
+      	// eslint-disable-next-line react-hooks/exhaustive-deps
   	}, []);
   var embed;
   if (isImageUrl(post.attachement)) { 

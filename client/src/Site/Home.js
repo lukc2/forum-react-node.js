@@ -1,7 +1,6 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import ThreadList from "./../components/View/ThreadList";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";

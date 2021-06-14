@@ -35,14 +35,14 @@ const ThreadView = (props) => {
             setVoted(result.data[0].voted.split(','))
           else 
           setVoted([])
-          console.log(result.data)
+         // console.log(result.data)
         }
 			})
 			.catch((err) => console.log(err));
 	};
 	useEffect(() => {
 		getThread();
-		
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 

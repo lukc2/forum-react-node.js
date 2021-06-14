@@ -32,6 +32,8 @@ export default function Category({ match }) {
 
 	useEffect(() => {
 		getThreads();		
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
   return (
     <>

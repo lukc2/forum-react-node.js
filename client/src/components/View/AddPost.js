@@ -2,7 +2,6 @@ import React from "react";
 
 import styles from "../../styles/components/AddPost.module.css";
 import Card from "react-bootstrap/Card";
-import UserStats from "./UserStats";
 import {useState} from "react";
 import axios from "axios";
 import { useHistory } from "react-router";
