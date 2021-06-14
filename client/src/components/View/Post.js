@@ -13,14 +13,14 @@ import EditPost from "./EditPost";
 import UserInfo from "../../utils/UserInfo";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useParams } from "react-router";
+import { useParams, useEffect } from "react-router";
 
 const Post = (props) => {
   const [post] = useState(props.post)
   const [rep, setRep] = useState(post.reputation);
-  const [voted, setVoted] = useState(post.voted.split(','));
+  const [voted, setVoted] = useState([]);
   const [edit, setEdit] = useState(false)
-  let { id } = useParams();
+  //let { id } = useParams();
   const thumbHandler = async (val) => {
 
     if(UserInfo.getLoggedIn()){
@@ -58,6 +58,12 @@ const Post = (props) => {
     // })
   }
 
+  useEffect(() => {
+    if(post.voted.split(',')!==null)
+    setVoted(post.voted.split(','))
+    else 
+      setVoted([])
+  	}, []);
   var embed;
   if (isImageUrl(post.attachement)) { 
     embed = <a href={post.attachement}><img  alt='' src={post.attachement} /> </a>

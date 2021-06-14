@@ -31,7 +31,10 @@ const ThreadView = (props) => {
         } else {
           setThread(result.data[0]);
           setRep(result.data[0].reputation)
-          setVoted(result.data[0].voted.split(','))
+          if(result.data[0].voted!==null)
+            setVoted(result.data[0].voted.split(','))
+          else 
+          setVoted([])
           console.log(result.data)
         }
 			})
