@@ -13,11 +13,14 @@ const ThreadList = (props) => {
       
       <h3 className={styles.nameHeader}>{props.category.name}</h3>
       {props.category.id !== undefined ? 
+      <>
+      {UserInfo.getLoggedIn()?
       <div className={styles.addThread}>
-        {UserInfo.getLoggedIn()?
           <Link to={"/category/" + props.category.id + "/addThread/"+props.category.id}>Add Thread</Link>
-          : ''}
-      </div> : ''
+          
+      </div> 
+      : ''}</>
+      : ''
       }
       
       {threadList}
