@@ -211,7 +211,7 @@ module.exports = {
 		let votedString = post.voted;
 
 		if (votedString == null) {
-			votedString = "";
+			votedString = "0";
 		}
 		let votArr = votedString.split(",");
 
@@ -254,7 +254,7 @@ module.exports = {
 		let votedString = thread.voted;
 
 		if (votedString == null) {
-			votedString = "";
+			votedString = "0";
 		}
 		let votArr = votedString.split(",");
 
