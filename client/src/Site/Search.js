@@ -27,7 +27,13 @@ export function Search() {
 			});
 	}, [searchValue, staticSearch]);
 	const threadList = searchResult?.map((thread) => {
-		return <Thread key={thread.id} thread={thread} />;
+		return (
+			<Thread
+				key={thread.id}
+				thread={thread}
+				category={{ id: thread.category_id }}
+			/>
+		);
 	});
 	return (
 		<>
