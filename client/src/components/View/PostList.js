@@ -7,19 +7,17 @@ import { toast } from "react-toastify";
 const PostList = (props) => {
 
 
-    const [rank, getRank] =useState([
-
-    ])
+    const [ranks, setRanks] =useState([])
 
     const getRanks = async () => {
+      //http://localhost:3000/api/forum/ranks
       axios({ method: "get", url: "/api/forum/ranks"})
 			.then((result) => {
-        if (result.data.success) {
-          toast.success(result.data.msg);
-          getRanks(result.data);
-        } else {
+        if (result.data.success===false) {
           console.error(result.data.errors);
           toast.error(result.data.msg);
+        } else {
+          setRanks(result.data);
         }
 			})
 			.catch((err) => console.log(err));
@@ -33,7 +31,7 @@ const PostList = (props) => {
 
     const postList = props.source?.map(post => {
 		return (
-            <Post category={props.category} ranks={rank} key={post.id} post={post}/> 
+            <Post category={props.category} ranks={ranks} key={post.id} post={post}/> 
 		)
 	  })
     

@@ -56,7 +56,7 @@ module.exports = {
 			include: [
 				{
 					model: db.Thread,
-					attributes: ["id", "name", "updatedAt"],
+					attributes: ["id", "name", "updatedAt", "reputation"],
 					include: [
 						{
 							model: db.User,

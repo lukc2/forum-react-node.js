@@ -4,7 +4,7 @@ import styles from "../../styles/components/Post.module.css";
 import Card from "react-bootstrap/Card";
 import { faThumbsUp, faThumbsDown, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Moment from "moment";
+import dateFormat from "dateformat";
 import UserStats from "./UserStats";
 import {useState} from "react";
 import Embed  from 'react-embed';
@@ -17,23 +17,33 @@ import { useParams } from "react-router";
 
 const Post = (props) => {
   const [post] = useState(props.post)
+  const [rep, setRep] = useState(post.reputation);
+  const [voted, setVoted] = useState(post.voted.split(','));
   const [edit, setEdit] = useState(false)
   let { id } = useParams();
-  const thumbHandler = (val) => {
+  const thumbHandler = async (val) => {
 
-    axios.put("localhost:3000/api/forum/"+props.category+"/"+props.post.thread_id, {
-      postId: props.post.id,
-      vote: val
-    })
-    .then((result) => {       
-      if (result.data.success) {
-        // toast.success(result.data.msg);
-      } else {
-        console.error(result.data.errors);
-        toast.error(result.data.msg);
+    if(UserInfo.getLoggedIn()){
+      axios.put("/api/forum/"+props.category+"/"+props.post.thread_id,{
+        postId: props.post.id,
+        vote: val
+      })
+      .then((result) => {       
+        if (result.data.success===false) {
+          console.error(result.data.errors);
+          toast.error(result.data.msg);
+        } else {
+          toast.success(result.data.msg);
+          setRep(rep+val)
+            setVoted([...voted, UserInfo.getId()])
+        }
+      })
+      .catch((err) => console.log(err));
       }
-    })
-    .catch((err) => console.log(err));
+      else{
+        toast.info("Musisz być zalogowany by móc głosować!")
+      }
+ 
 
     // setPost({
     //   id: post.id,
@@ -47,7 +57,7 @@ const Post = (props) => {
     //   updated_at: post.updated_at
     // })
   }
-  var postDate = Moment(props.post.timestamp).format("DD.MM.yyy hh:mm");
+
   var embed;
   if (isImageUrl(post.attachement)) { 
     embed = <a href={post.attachement}><img  alt='' src={post.attachement} /> </a>
@@ -81,12 +91,12 @@ const Post = (props) => {
 
       <Card>
         <Card.Body>         
-            {post.user_id===UserInfo.getId() ? <button className={styles.editButton} onClick={handleEdit}>Edit</button> :<></>}
-            {edit ? <EditPost id={id} post={post}/> :  items()}               
+            {post.user_id===parseInt(UserInfo.getId()) ? <button className={styles.editButton} onClick={handleEdit}>Edit</button> :<></>}
+            {edit ? <EditPost category={props.category} post={post}/> :  items()}               
 
           <div className="border-top">
             <div className="col-5 float-left">       
-              <div style={post.voted?.includes(UserInfo.getId())?{pointerEvents: "none", opacity: "0.4"}:{opacity: "1"}}>
+              <div style={voted?.includes(UserInfo.getId())?{pointerEvents: "none", opacity: "0.4"}:{opacity: "1"}}>
                 <div onClick={() => thumbHandler(1)} className={styles.thumbsUp}>
                   <FontAwesomeIcon icon={faThumbsUp} />
                 </div>
@@ -97,12 +107,12 @@ const Post = (props) => {
                   <FontAwesomeIcon icon={faThumbsDown} />
                 </div>
               </div>
-              <div className={styles.reps}>{post.reputation}</div>
+              <div className={styles.reps}>{rep}</div>
             </div>
             <span className={styles.statsThread}>
               <span className="float-right"> 
               <FontAwesomeIcon icon={faCalendar} /> :{" "}
-                {Moment(postDate).format("DD.MM.yyy hh:mm")}    
+              {dateFormat(props.post.timestamp,"dd.mm.yyyy hh:mm")}
               </span>
              
             </span>

@@ -16,87 +16,23 @@ import { toast } from "react-toastify";
 
 const ThreadView = (props) => {
 
-  let { thrId } = useParams();
   let { id }= useParams();
-  // const [threads] = useState([
-  //   // {
-  //   //   id: 1, 
-  //   //   name: "Hello everyone",
-  //   //   category_id: 1,
-  //   //   reputation: 14,
-  //   //   voted: [],
-  //   //   created_at: Date.now(),
-  //   //   closed: false,
-  //   //   user_id: 1
-  //   // },
-  //   // {
-  //   //   id: 2,
-  //   //   name: "Where do I find this?",
-  //   //   category_id: 1,
-  //   //   reputation: 23,
-  //   //   voted: [],
-  //   //   created_at: Date.now(),
-  //   //   closed: false,
-  //   //   user_id: 1
-  //   // },
-  //   // {
-  //   //   id: 3,
-  //   //   name: "Why is it so?",
-  //   //   category_id: 1,
-  //   //   reputation: 3131,
-  //   //   voted: [],
-  //   //   created_at: Date.now(),
-  //   //   closed: false,
-  //   //   user_id: 1
-  //   // }
-  // ]);
+
   const [thread, setThread] = useState([]);
-  
-  // const [posts] = useState([
-  //   // {
-  //   //   id: 1,
-  //   //   thread_id: parseInt(id),
-  //   //   user_id: 1,
-  //   //   content:
-  //   //     "Hello everyoneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-  //   //   attachement: 'https://i.imgur.com/HFzYtr2.jpg',
-  //   //   reputation: 14,
-  //   //   created_at: Date.now(),
-  //   //   updated_at: Date.now()+10,
-  //   //   voted: []
-  //   // },
-  //   // {
-  //   //   id: 2,
-  //   //   user_id: 2,
-  //   //   thread_id: parseInt(id),
-  //   //   content: "No",
-  //   //   attachement: 'https://www.youtube.com/watch?v=YZwSzGYtvWg',
-  //   //   reputation: 14,
-  //   //   created_at: Date.now(),
-  //   //   updated_at: Date.now(),
-  //   //   voted: [1,2]
-  //   // },
-  //   // {
-  //   //   id: 3,
-  //   //   user_id: 2,
-  //   //   thread_id: parseInt(id),
-  //   //   attachement: 'https://soundcloud.com/musicbyvander/wii-theme-song-trap-remix',
-  //   //   content: "Hello everyone",
-  //   //   reputation: 14,
-  //   //   created_at: Date.now(),
-  //   //   updated_at: Date.now(),
-  //   //   voted: [1,2]
-  //   // },
-  // ]);
+  const [rep, setRep] = useState(0);
+  const [voted, setVoted] = useState([]);
+
 	const getThread = async () => {
-		axios({ method: "get", url: "/api/forum/"+id+"/"+thrId})
+		axios({ method: "get", url: "/api/forum/"+props.id+"/"+id})
 			.then((result) => {
-        if (result.data.success) {
-          //toast.success(result.data.msg);
-          setThread(result.data);
-        } else {
+        if (result.data.success===false) {
           console.error(result.data.errors);
           toast.error(result.data.msg);
+        } else {
+          setThread(result.data[0]);
+          setRep(result.data[0].reputation)
+          setVoted(result.data[0].voted.split(','))
+          console.log(result.data)
         }
 			})
 			.catch((err) => console.log(err));
@@ -107,27 +43,28 @@ const ThreadView = (props) => {
 	}, []);
 
 
-  const thumbHandler = (val) => {
-      axios({ method: "put", url: "api/forum/"+id,data:{
-              threadId: thrId,
+  const thumbHandler = async (val) => {
+      if(UserInfo.getLoggedIn()){
+      axios.put("/api/forum/"+id,{
+              threadId: id,
               vote: val
-          }  })
-        .then((result) => {       
-          console.log(result.data);
-          getThread(); 
+          }  )
+        .then((result) => {   
+          if (result.data.success===false) {
+            console.error(result.data.errors);
+            toast.error(result.data.msg);
+          } else {
+            toast.success(result.data.msg);
+            setRep(rep+val)
+            setVoted([...voted, UserInfo.getId()])
+          }    
         })
         .catch((err) => console.log(err));
- 
-    // setThread((thread) => ({
-    //   id: thread.id,
-    //   name: thread.name,
-    //   category_id: thread.category_id,
-    //   reputation: thread.reputation + val,
-    //   voted: voted,
-    //   created_at: thread.created_at,
-    //   closed: thread.closed,
-    //   user_id: thread.user_id
-    // }));
+      }
+      else{
+        toast.info("Musisz być zalogowany by móc głosować!")
+      }
+  
 
   };
   return (
@@ -136,14 +73,14 @@ const ThreadView = (props) => {
         <br></br>
         <Card>
           <Card.Header>
-            <div className="col-12 w-50">
+            <div className="col-12">
               <b>
                 <h2>{thread.name}</h2>
               </b>
             </div>
             <div className="col-12 border-top">
               <div className="col-5 float-left">
-                <div style={thread.votes?.includes(UserInfo.getId())?{pointerEvents: "none", opacity: "0.4"}:{opacity: "1"}}>
+                <div style={voted?.includes(UserInfo.getId())?{pointerEvents: "none", opacity: "0.4"}:{opacity: "1"}}>
                   <div
                     onClick={() => thumbHandler(1)}
                     className={styles.thumbsUp}
@@ -157,7 +94,7 @@ const ThreadView = (props) => {
                     <FontAwesomeIcon icon={faThumbsDown} />
                   </div>
                 </div> 
-                <div className={styles.reps}>{thread.reputation}</div>
+                <div className={styles.reps}>{rep}</div>
               </div>
               <span className={styles.statsThread}>
                 <span className="col-3 float-right">
@@ -170,7 +107,9 @@ const ThreadView = (props) => {
       </div>
       <br></br>
       <div className=" ml-auto mr-auto w-75">
-        <AddPost thread={thrId} category={thread.category_id}/>
+        {UserInfo.getLoggedIn()?
+          <AddPost thread={id} category={thread.category_id}/>
+          :''}
         <PostList category={thread.category_id} source={thread.posts} />
       </div>
     </>

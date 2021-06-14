@@ -6,22 +6,25 @@ import Card from "react-bootstrap/Card";
 import {useState} from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-
+import { useHistory } from "react-router";
 
 const EditPost = (props) => {
+    const history = useHistory();
     const [content, setContent] = useState(props.post.content)
     const [attachement, setAttachement] = useState(props.post.attachement)
 
     const PostHandler = (e) =>{
         e.preventDefault()
 
-        axios.patch("localhost:3000/api/forum/"+props.id+"/"+props.post.id, {
+        axios.patch("/api/forum/"+props.category+"/"+props.post.thread_id, {
+            postID: props.post.id,
             content: content,
             attachement: attachement
         })
 			.then((result) => {
         if (result.data.success) {
           toast.success(result.data.msg);
+          history.push("/category/"+props.category+"/thread/"+props.post.thread_id);
         } else {
           console.error(result.data.errors);
           toast.error(result.data.msg);
@@ -41,7 +44,7 @@ const EditPost = (props) => {
                     Media link:  <br/>
                     <input type="text" value={attachement} className={styles.attachment} onChange={(e)=>setAttachement(e.target.value)}/>
                     {" "}(youtube, soundcloud, image source, etc.)
-                    <div className={styles.postButton} onClick={PostHandler}><button >Confirm</button></div>
+                    <div className={styles.postButton} ><button onClick={PostHandler}>Confirm</button></div>
                     
                 </form>           
         </Card.Body>

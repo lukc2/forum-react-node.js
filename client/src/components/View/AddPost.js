@@ -5,18 +5,27 @@ import Card from "react-bootstrap/Card";
 import UserStats from "./UserStats";
 import {useState} from "react";
 import axios from "axios";
-
+import { useHistory } from "react-router";
+import { toast } from "react-toastify";
 
 const AddPost = (props) => {
+    const history = useHistory();
     const [content, setContent] = useState('')
     const [attachement, setAttachement] = useState('')
 
     const addPost = async () => {
-		axios({ method: "post", url: "api/forum/"+props.category+"/"+props.thread,data:{
+		axios.post("/api/forum/"+props.category+"/"+props.thread,{
             content: content,
             attachement: attachement
-        }  })
-			.then((result) => {       
+        } )
+			.then((result) => {   
+                if (result.data.success) {
+                    toast.success(result.data.msg); 
+                    history.push("/category/"+props.category+"/thread/"+props.thread);             
+                } else {
+                    console.error(result.data.errors);
+                    toast.error(result.data.errors);
+                  }    
                 console.log(result.data);
                 
 			})
