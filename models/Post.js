@@ -17,7 +17,8 @@ module.exports=module.exports=(sequelize,DataTypes)=>{
             defaultValue: 0
         },
 		voted:{
-            type: DataTypes.TEXT//DataTypes.ARRAY(DataTypes.TEXT),
+            type: DataTypes.TEXT,//DataTypes.ARRAY(DataTypes.TEXT),
+            defaultValue: "0"
         },
 		attachement:{
             type: DataTypes.TEXT,
