@@ -422,7 +422,7 @@ module.exports = {
 			return;
 		}
 
-		if (user.rank_id == 3 || post.user_id != user.id) {
+		if (user.rank_id == 3 && post.user_id != user.id) {
 			//tutaj zależy od tego jak jest w bazie, można ustalić że 1 to admin a 2 to mod
 			res.json({
 				success: false,
