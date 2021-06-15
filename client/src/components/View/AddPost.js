@@ -25,7 +25,7 @@ const AddPost = (props) => {
                     console.error(result.data.errors);
                     toast.error(result.data.errors);
                   }    
-                console.log(result.data);
+                //console.log(result.data);
                 
 			})
 			.catch((err) => console.log(err));

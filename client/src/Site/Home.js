@@ -44,7 +44,7 @@ export default function Home(props) {
 	if (props.history.location.state?.msg)
 		toast.info(props.history.location.state.msg);
 
-	console.log(categoriesJSON);
+	//console.log(categoriesJSON);
 	const categoriesList = categoriesJSON?.map((item) => {
 		return (
 			<div key={item.id} className=" mx-auto w-75">
