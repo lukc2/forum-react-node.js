@@ -163,6 +163,7 @@ module.exports = {
 	addPost: async (req, res) => {
 		let content = req.body.content;
 		let ThrId = req.params.threadId;
+		let attachement =  req.body.attachement;
 		const thread = await db.Thread.findByPk(ThrId);
 		if (thread.closed == 1) {
 			res.json({
@@ -176,6 +177,7 @@ module.exports = {
 			thread_id: ThrId,
 			user_id: req.session.userId,
 			content: content,
+			attachement: attachement
 		}).catch((err) => {
 			res.json({
 				success: false,
