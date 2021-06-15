@@ -34,11 +34,12 @@ const Thread = (props) => {
                   {props.thread.reputation}
                 </span>
               </div>
-
-              <span className="col-3 float-right">
+              <div className={styles.dateRight}>
+              <span className="col-5 float-right">
                  <FontAwesomeIcon icon={faCalendar} /> :{" "}
                  {dateFormat(props.thread.created_at,"dd.mm.yyyy hh:mm")}   
               </span>
+              </div>
             </span>
           </div>
         </Card.Body>

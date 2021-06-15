@@ -4,6 +4,7 @@ import ThreadList from "../components/View/ThreadList";
 import ThreadView from "../components/View/ThreadView";
 import { useParams } from "react-router";
 import AddThread from "../components/View/AddThread";
+import styles from "../styles/components/Category.module.css";
 import axios from "axios";
 
 export default function Category({ match }) {
@@ -36,7 +37,7 @@ export default function Category({ match }) {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
   return (
-    <>
+    <div className={styles.mainContainer}>
       <Route
         path="/category/:id"
         exact
@@ -48,6 +49,6 @@ export default function Category({ match }) {
       />
       <Route path="/category/:id/thread/:id" component={() => <ThreadView id={id} />} />
       <Route path="/category/:id/addThread" component={() => <AddThread id={id}/>} />
-    </>
+    </div>
   );
 }

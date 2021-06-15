@@ -47,7 +47,7 @@ export default function Home(props) {
 	console.log(categoriesJSON);
 	const categoriesList = categoriesJSON?.map((item) => {
 		return (
-			<div key={item.id} className=" mx-auto w-50">
+			<div key={item.id} className=" mx-auto w-75">
 				<Card>
 					<Card.Body>
 						<Card.Title>
