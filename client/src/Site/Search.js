@@ -39,7 +39,7 @@ export function Search() {
 		<>
 			<Row>
 				<Col>
-					<h2>Testowy search: {searchValue}</h2>
+					<h2>Search: {searchValue}</h2>
 				</Col>
 			</Row>
 			{threadList}
